@@ -15,6 +15,7 @@ export class AuthService {
 
   private serverUrl = 'http://localhost:3001';
   private loginUrl = `${this.serverUrl}/login`;
+  private googleUrl = `${this.serverUrl}/google`;
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -28,6 +29,10 @@ export class AuthService {
 
   public loginPatientUser(patientUser: User): any {
     return this.http.post<any>(this.loginUrl, patientUser);
+  }
+
+  public loginGoogleUser(googleUser: HospitalUser): any {
+    return this.http.post<any>(this.googleUrl, googleUser);
   }
 
   public getNewAccessToken(): any {

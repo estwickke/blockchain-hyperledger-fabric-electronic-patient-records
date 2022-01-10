@@ -30,8 +30,8 @@
             </div>
             <div class="form-group mt-3">
               <label for="name">Username</label>
-              <input type="text" name="username" class="form-control rounded-1" required
-                [(ngModel)]="username">
+              <input type="text" class="form-control" [value]="firstName + lastName" id="username"
+		[(ngModel)]="username" [ngModelOptions]="{standalone: true}">
             </div>
             <div class="form-group mt-3">
               <label for="password">Password</label>
@@ -49,10 +49,11 @@
                 Create new password
               </button>
             </ng-container>
-            <button *ngIf="!createNewPwd" type="button" class="btn btn-success float-right mt-2" [disabled]="loginForm.invalid"
+            <button type="button" class="btn btn-success float-right mt-2" [disabled]="loginForm.invalid"
                     (click)="loginUser()">
               Login
             </button>
+             <button (click)="loginWithGoogle()" mat-raised-button class="btn btn-primary float-right mt-2">Google</button>
           </form>
         </div>
         <!--/card-block-->

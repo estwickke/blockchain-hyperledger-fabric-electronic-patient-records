@@ -28,6 +28,8 @@ import { DoctorListForPatientComponent } from './doctor/doctor-list-for-patient/
 import { PatientListForDoctorComponent } from './doctor/patient-list-for-doctor/patient-list-for-doctor.component';
 import { LoadingPipe } from './loading.pipe';
 
+import {GoogleLoginProvider, SocialLoginModule} from 'angularx-social-login';
+
 const components = [
   AppComponent,
   LoginComponent,
@@ -61,14 +63,27 @@ const pipes = [
     AppRoutingModule,
     ReactiveFormsModule,
     NgSelectModule,
-    NgbTooltipModule
+    NgbTooltipModule,
+    SocialLoginModule
   ],
   providers: [ AuthService, AuthGuard, SearchService, AdminService, PatientService, DoctorService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,
       multi: true
+    },
+    {
+    provide: 'SocialAuthServiceConfig',
+    useValue: {
+      autoLogin: true,
+      providers: [
+        {
+          id: GoogleLoginProvider.PROVIDER_ID,
+          provider: new GoogleLoginProvider('573932251883-ojq58f65t4vr2n76qvuailsklmd2doab.apps.googleusercontent.com')
+        }
+      ]
     }
+  }
   ],
   bootstrap: [ AppComponent ]
 })
