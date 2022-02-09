@@ -5,6 +5,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { UploadImagesComponent } from './doctor/upload-images/upload-images.component';
+
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -47,7 +50,8 @@ const components = [
   ToolbarButtonComponent,
   ToolbarLinkComponent,
   SearchComboComponent,
-  SearchTextComponent
+  SearchTextComponent,
+  UploadImagesComponent
 ];
 
 const pipes = [

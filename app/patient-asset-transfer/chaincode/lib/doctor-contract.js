@@ -13,7 +13,9 @@
 let Patient = require('./Patient.js');
 const AdminContract = require('./admin-contract.js');
 const PrimaryContract = require("./primary-contract.js");
-const { Context } = require('fabric-contract-api');
+const {
+    Context
+} = require('fabric-contract-api');
 
 class DoctorContract extends AdminContract {
 
@@ -26,7 +28,7 @@ class DoctorContract extends AdminContract {
         const doctorId = await this.getClientId(ctx);
         // Check if doctor has the permission to read the patient
         const permissionArray = asset.permissionGranted;
-        if(!permissionArray.includes(doctorId)) {
+        if (!permissionArray.includes(doctorId)) {
             throw new Error(`The doctor ${doctorId} does not have permission to patient ${patientId}`);
         }
         asset = ({
@@ -118,6 +120,41 @@ class DoctorContract extends AdminContract {
         }
 
         return this.fetchLimitedFields(permissionedAssets);
+    }
+
+    //Create imageAsset in the ledger
+    async uploadImage(ctx, args) {
+        args = JSON.parse(args);
+
+        let newImage = await new Image(args.imageName, args.ownerHosp, args.uploadedBy);
+        const buffer = Buffer.from(JSON.stringify(newImage));
+        await ctx.stub.putState(newImage.imageName, buffer);
+    }
+
+    //Image preview details
+    async readImage(ctx, patientId) {
+        let asset = await super.readImage(ctx, imageName)
+
+        asset = ({
+            imageName: imageName,
+            ownerHosp: asset.ownerHosp,
+            uploadedBy: asset.uploadedBy,
+        });
+        return asset;
+    }
+
+    async transferImage(ctx, args) {
+        args = JSON.parse(args);
+        let newHospOwner = args.ownerHosp;
+
+        const image = await PrimaryContract.prototype.readImage(ctx, imageName);
+
+        if (newHospOwner !== image.ownerHosp) {
+            image.ownerHosp = newHospOwner;
+        }
+
+        const buffer = Buffer.from(JSON.stringify(image));
+        await ctx.stub.putState(imageName, buffer);
     }
 
     fetchLimitedFields = (asset, includeTimeStamp = false) => {

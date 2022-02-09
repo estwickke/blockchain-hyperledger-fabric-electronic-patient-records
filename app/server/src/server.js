@@ -27,16 +27,36 @@ let refreshTokens = [];
 
 // Express Application init
 const app = express();
+const db = require("./models");
+const initRoutes = require("./routes/web");
+
+global.__basedir = __dirname;
+
+var corsOptions = {
+  origin: "http://localhost:4200"
+};
+
 app.use(morgan('combined'));
 app.use(bodyParser.json());
-app.use(cors());
+//changed from cors to corsOptions
+app.use(cors(corsOptions));
 
-app.listen(3001, () => console.log('Backend server running on 3001'));
+app.use(express.urlencoded({ extended: true }));
+initRoutes(app);
+
+db.sequelize.sync();
+
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+});
+//app.listen(3001, () => console.log('Backend server running on 3001'));
 
 // Bring key classes into scope
 const patientRoutes = require('./patient-routes');
 const doctorRoutes = require('./doctor-routes');
 const adminRoutes = require('./admin-routes');
+//const imageRoutes = require('./routes/web')
 const {ROLE_DOCTOR, ROLE_ADMIN, ROLE_PATIENT, CHANGE_TMP_PASSWORD} = require('../utils');
 const {createRedisClient, capitalize, getMessage} = require('../utils');
 const network = require('../../patient-asset-transfer/application-javascript/app.js');
@@ -169,37 +189,6 @@ app.post('/token', (req, res) => {
   });
 });
 
-app.post('/google', async (req, res) => {
-  // Read username and password from request body
-  let {username, password, hospitalId, role} = req.body;
-  hospitalId = parseInt(hospitalId);
-  let user;
-  // using get instead of redis GET for async
-  if (role === ROLE_DOCTOR) {
-    // Create a redis client based on the hospital ID
-    const redisClient = await createRedisClient(hospitalId);
-    // Async get
-    const value = await redisClient.get(username);
-    // comparing passwords
-    user = value;
-    redisClient.quit();
-  }
-  if (user) {
-    // Generate an access token
-    const accessToken = generateAccessToken(username, role);
-    const refreshToken = jwt.sign({username: username, role: role}, refreshSecretToken);
-    refreshTokens.push(refreshToken);
-    // Once the password is matched a session is created with the username and password
-    res.status(200);
-    res.json({
-      accessToken,
-      refreshToken,
-    });
-  } else {
-    res.status(400).send({error: 'Username or password incorrect!'});
-  }
-});
-
 /**
  * @description Logout to remove refreshTokens
  */
@@ -216,6 +205,8 @@ app.post('/patients/register', authenticateJWT, adminRoutes.createPatient);
 // //////////////////////////////// Doctor Routes //////////////////////////////////////
 app.patch('/patients/:patientId/details/medical', authenticateJWT, doctorRoutes.updatePatientMedicalDetails);
 app.get('/doctors/:hospitalId([0-9]+)/:doctorId(HOSP[0-9]+\-DOC[0-9]+)', authenticateJWT, doctorRoutes.getDoctorById);
+app.post('/images/uploadImage', authenticateJWT, doctorRoutes.uploadImage);
+app.patch('/images/:imageName/details/ownerHosp', authenticateJWT, doctorRoutes.transferImage);
 
 // //////////////////////////////// Patient Routes //////////////////////////////////////
 app.get('/patients/:patientId', authenticateJWT, patientRoutes.getPatientById);

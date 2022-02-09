@@ -23,4 +23,8 @@ export class DoctorService {
   public getDoctorByHospitalId(hospitalId: string, docId: any): Observable<any> {
     return this.http.get(this.doctorURL + `/${hospitalId}/${docId}`);
   }
+
+  public doctorUploadImage(data: any): Observable<any> {
+    return this.http.post(this.doctorURL + '/images/uploadImage', data);
+  }
 }

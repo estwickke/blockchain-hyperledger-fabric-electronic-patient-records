@@ -31,6 +31,40 @@ exports.updatePatientMedicalDetails = async (req, res) => {
   (response.error) ? res.status(500).send(response.error) : res.status(200).send(getMessage(false, 'Successfully Updated Patient.'));
 };
 
+exports.uploadImage = async (req, res) => {
+  // User role from the request header is validated
+  const userRole = req.headers.role;
+  await validateRole([ROLE_DOCTOR], userRole, res);
+  // Set up and connect to Fabric Gateway using the username in header
+  const networkObj = await network.connectToNetwork(req.headers.username);
+
+  req.body.uploadedBy = req.headers.username;
+
+  // The request present in the body is converted into a single json string
+  const data = JSON.stringify(req.body);
+  const args = [data];
+  // Invoke the smart contract function
+  const createImageRes = await network.invoke(networkObj, false, capitalize(userRole) + 'Contract:uploadImage', args);
+  if (createImageRes.error) {
+    res.status(400).send(response.error);
+  }
+};
+  
+  
+exports.transferImage = async (req, res) => {
+  // User role from the request header is validated
+  const userRole = req.headers.role;
+  await validateRole([ROLE_DOCTOR], userRole, res);
+  let args = req.body;
+  args.uploadedBy = req.headers.username;
+  args= [JSON.stringify(args)];
+  // Set up and connect to Fabric Gateway
+  const networkObj = await network.connectToNetwork(req.headers.username);
+  // Invoke the smart contract function
+  const response = await network.invoke(networkObj, false, capitalize(userRole) + 'Contract:transferImage', args);
+  (response.error) ? res.status(500).send(response.error) : res.status(200).send(getMessage(false, 'Successfully Transferred Image.'));
+};
+
 /**
  * @param  {Request} req role in the header and hospitalId, doctorId in the url
  * @param  {Response} res A 200 response if doctor is present else a 500 response with a error json
