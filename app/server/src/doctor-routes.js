@@ -53,17 +53,40 @@ exports.uploadImage = async (req, res) => {
   
 exports.transferImage = async (req, res) => {
   // User role from the request header is validated
-  const userRole = req.headers.role;
-  await validateRole([ROLE_DOCTOR], userRole, res);
-  let args = req.body;
+  const userRole = ROLE_DOCTOR;
+ // await validateRole([ROLE_DOCTOR], userRole, res);
+  //let args = req.body;
+  const data = JSON.stringify(req.body);
+  const args = [data];
+  console.log(JSON.stringify(data) + '6161616166161616616');
+  //console.log(res);
+  //console.log(req);
   args.uploadedBy = req.headers.username;
-  args= [JSON.stringify(args)];
   // Set up and connect to Fabric Gateway
   const networkObj = await network.connectToNetwork(req.headers.username);
   // Invoke the smart contract function
-  const response = await network.invoke(networkObj, false, capitalize(userRole) + 'Contract:transferImage', args);
+  // Getting held up here, target whats returning error 500,  Error: Illegal value for keyvalue element of type string: undefined (not a string)
+  const response = await network.invoke(networkObj, false, capitalize(userRole) + 'Contract:transferImage', args); //compare args here w similar func in admin routes
   (response.error) ? res.status(500).send(response.error) : res.status(200).send(getMessage(false, 'Successfully Transferred Image.'));
 };
+
+exports.queryAllTransferredImages= async (req, res) => {
+  // User role from the request header is validated
+  const userRole = req.headers.role;
+  console.log(req + '7676767676767676767');
+  const imageName= JSON.stringify("VCUImage1.jfif");
+  await validateRole([ROLE_DOCTOR], userRole, res);
+  console.log(imageName);
+  // Set up and connect to Fabric Gateway using the username in header
+  const networkObj = await network.connectToNetwork(req.headers.username);
+  // Invoke the smart contract function
+  const response = await network.invoke(networkObj, true, capitalize(userRole) + 'Contract:queryAllTransferredImages', imageName);
+  //const parsedResponse = await JSON.parse(response);
+  console.log(response + '84848484848484848484');
+ // console.log(parsedResponse);
+  (response.error) ? res.status(400).send(response.error) : res.status(200).send(JSON.parse(response));
+};
+
 
 /**
  * @param  {Request} req role in the header and hospitalId, doctorId in the url

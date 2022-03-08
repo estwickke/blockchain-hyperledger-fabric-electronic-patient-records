@@ -2,10 +2,12 @@ const crypto = require('crypto');
 
 class Image {
 
-    constructor(imageName, ownerHosp, uploadedBy = '')
+    constructor(imageName, ownerHosp, file, transferredBy = '')
     {
-        this.patientId = imageName;
-        this.ownerHosp = ownerHosp
+        this.imageName = imageName;
+        this.ownerHosp = ownerHosp;
+        this.file = file;
+        this.transferredBy = transferredBy;
         return this;
     }
 }

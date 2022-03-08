@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
+//import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
+
 
 import { Observable } from 'rxjs';
 
@@ -24,7 +26,22 @@ export class DoctorService {
     return this.http.get(this.doctorURL + `/${hospitalId}/${docId}`);
   }
 
-  public doctorUploadImage(data: any): Observable<any> {
-    return this.http.post(this.doctorURL + '/images/uploadImage', data);
+  public transfer(transferImageData: any): Observable<any> {
+    console.log(transferImageData);
+    console.log(transferImageData.imageName);
+    console.log(transferImageData.ownerHosp);
+    console.log(transferImageData.transferredBy);
+    console.log(transferImageData.file);
+
+    
+    return this.http.post(this.doctorURL + '/transfer', transferImageData);
   }
+  
+  public fetchAllTransferredImages(): Observable<any> {
+    return this.http.get(this.doctorURL + '/allTransferredImages');
+  }
+
+  
+
+  
 }

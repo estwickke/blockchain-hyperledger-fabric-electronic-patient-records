@@ -18,4 +18,37 @@ export class DoctorViewRecord {
     this.lastName = doctorRecord.lastName;
     this.role = doctorRecord.role;
   }
+
+  
+}
+
+export interface ImageRecord{
+  imageName: string;
+  file: string;
+  transferredBy: string;
+  ownerHosp: string;
+}
+
+export class ImageViewRecord{
+  imageName= '';
+  file= '';
+  transferredBy= '';
+  ownerHosp= '';
+
+  constructor(readonly imageRecord:  ImageRecord) {
+    this.imageName= imageRecord.imageName;
+    this.file= imageRecord.file;
+    this.transferredBy= imageRecord.transferredBy;
+    this.ownerHosp= imageRecord.ownerHosp;
+  }
+}
+
+export class DisplayVal {
+  keyName: string | number | boolean;
+  displayName: string;
+
+  constructor(key: string | number | boolean, value: string) {
+    this.keyName = key;
+    this.displayName = value;
+  }
 }

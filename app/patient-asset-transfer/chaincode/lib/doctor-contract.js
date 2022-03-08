@@ -13,6 +13,7 @@
 let Patient = require('./Patient.js');
 const AdminContract = require('./admin-contract.js');
 const PrimaryContract = require("./primary-contract.js");
+let Image = require('./image.js');
 const {
     Context
 } = require('fabric-contract-api');
@@ -122,6 +123,21 @@ class DoctorContract extends AdminContract {
         return this.fetchLimitedFields(permissionedAssets);
     }
 
+    //Retrieves all images to querying hospital
+   // async queryAllImages(ctx, hospitalId) {
+   //     let resultsIterator = await ctx.stub.getStateByRange('', '');
+    //    let asset = await this.getAllPatientResults(resultsIterator, false);
+    //    const permissionedAssets = [];
+     //   for (let i = 0; i < asset.length; i++) {
+      //      const obj = asset[i];
+       //     if ('permissionGranted' in obj.Record && obj.Record.permissionGranted.includes(hospitalId)) {
+        //        permissionedAssets.push(asset[i]);
+        //    }
+      //  }
+
+      //  return this.fetchLimitedFields(permissionedAssets);
+   // }
+
     //Create imageAsset in the ledger
     async uploadImage(ctx, args) {
         args = JSON.parse(args);
@@ -145,16 +161,34 @@ class DoctorContract extends AdminContract {
 
     async transferImage(ctx, args) {
         args = JSON.parse(args);
-        let newHospOwner = args.ownerHosp;
+        //let newHospOwner = args.ownerHosp;
 
-        const image = await PrimaryContract.prototype.readImage(ctx, imageName);
+        //const image = await PrimaryContract.prototype.readImage(ctx, imageName);
+        let newImage = await new Image(args.imageName, args.ownerHosp, args.file, args.transferredBy);
+        console.log(newImage);
+        //if (newHospOwner !== image.ownerHosp) {
+        //    image.ownerHosp = newHospOwner;
+        // }
 
-        if (newHospOwner !== image.ownerHosp) {
-            image.ownerHosp = newHospOwner;
-        }
+        const buffer = Buffer.from(JSON.stringify(newImage));
+        //await ctx.stub.putState(newImage.imageName, buffer);
+        await ctx.stub.putPrivateData('hosp1-PrivateCollection', newImage.imageName, buffer);
+        console.log("TransferImage" + '176767677676776767767767676');
+    }
 
-        const buffer = Buffer.from(JSON.stringify(image));
-        await ctx.stub.putState(imageName, buffer);
+    async queryAllTransferredImages(ctx, args) {
+        args = JSON.parse(args);
+        let imageName= "VCUImage1.jfif";
+        console.log(imageName + '182828282828828282828282');
+        let res = {};
+        const buffer = await ctx.stub.getPrivateData('hosp1-PrivateCollection', imageName);
+        try {
+        res = JSON.parse(buffer.toString());
+        console.log(res + '1878787878787878787878787');
+    } catch (err) {
+      res = err;
+    }
+        return res;
     }
 
     fetchLimitedFields = (asset, includeTimeStamp = false) => {

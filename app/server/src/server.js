@@ -205,8 +205,9 @@ app.post('/patients/register', authenticateJWT, adminRoutes.createPatient);
 // //////////////////////////////// Doctor Routes //////////////////////////////////////
 app.patch('/patients/:patientId/details/medical', authenticateJWT, doctorRoutes.updatePatientMedicalDetails);
 app.get('/doctors/:hospitalId([0-9]+)/:doctorId(HOSP[0-9]+\-DOC[0-9]+)', authenticateJWT, doctorRoutes.getDoctorById);
-app.post('/images/uploadImage', authenticateJWT, doctorRoutes.uploadImage);
-app.patch('/images/:imageName/details/ownerHosp', authenticateJWT, doctorRoutes.transferImage);
+
+app.post('/doctors/transfer', authenticateJWT, doctorRoutes.transferImage);
+app.get('/doctors/allTransferredImages', authenticateJWT, doctorRoutes.queryAllTransferredImages);
 
 // //////////////////////////////// Patient Routes //////////////////////////////////////
 app.get('/patients/:patientId', authenticateJWT, patientRoutes.getPatientById);
