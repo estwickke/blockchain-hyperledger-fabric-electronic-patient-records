@@ -11,7 +11,12 @@ import { DisplayVal } from '../../patient/patient';
 
 
 
-
+class image {
+  imageName!: string;
+  File!: string;
+  ownerHosp!: string;
+  transferredBy!: string;
+};
 
 
 
@@ -39,6 +44,7 @@ export class UploadImagesComponent implements OnInit {
 
   imageInfos?: Observable<any>;
   private sub?: Subscription;
+  
 
   public headerNames = [
     new DisplayVal(ImageViewRecord.prototype.imageName, 'Image Name'),
@@ -47,7 +53,7 @@ export class UploadImagesComponent implements OnInit {
     new DisplayVal(ImageViewRecord.prototype.transferredBy, 'Transferred By')
   ];
 
-  
+    
 
   constructor(private uploadService: FileUploadService,
               private readonly authService: AuthService,
@@ -61,6 +67,8 @@ export class UploadImagesComponent implements OnInit {
                   });
               }
             }
+
+
 
   selectFiles(event: any): void {
     this.message = [];
@@ -128,16 +136,31 @@ export class UploadImagesComponent implements OnInit {
   }
 
   public queryImages(): void{
+    var imageName = '';
+    //ImageRecord.imageName = "name";
     this.allSub.add(
       this.doctorService.fetchAllTransferredImages().subscribe(x => {
         const data = x as Array<ImageRecord>;
-        console.log(Object.values(data)[0]);
-        console.log(Object.values(data)[1]);
-        console.log(Object.values(data)[2]);
-        console.log(Object.values(data)[3]);
+        let MyImageBlob = Object.values(data)[0];
+        let MyImageName = Object.values(data)[1];
+        let MyImageOwner = Object.values(data)[2];
+        let MyImageTransferredBy = Object.values(data)[3];
+
+        this.imageRecord.push(MyImageName);
+        this.imageRecord.push(MyImageBlob);
+        this.imageRecord.push(MyImageOwner);
+        this.imageRecord.push(MyImageTransferredBy);
+
+       // this.imageRecord.
+      //  console.log(data);
+      //console.log(Object.values(data)[0]); //blob
+      //  console.log(Object.values(data)[1]); //name
+      //  console.log(Object.values(data)[2]); //owner
+      //  console.log(Object.values(data)[3]); //transferrredBy
         
         
-        data.map(y => this.imageRecord.push(new ImageViewRecord(y)));
+        
+        
 
         //console.log(this.imageRecord);
         //console.log(this.imageRecord[0] + '1333333333333333333333333333333333');
@@ -174,10 +197,10 @@ export class UploadImagesComponent implements OnInit {
     formData.append('ownerHosp', hospitalId);
     formData.append('transferredBy', transferredBy);
     
-    console.log(formData.get('file'));
-    console.log(formData.get('imageName'));
-    console.log(formData.get('ownerHosp'));
-    console.log(formData.get('transferredBy'));
+    //console.log(formData.get('file'));
+    //console.log(formData.get('imageName'));
+    //console.log(formData.get('ownerHosp'));
+    //console.log(formData.get('transferredBy'));
     //console.log(file.name);
     //console.log(hospitalId);
     this.allSub.add(
