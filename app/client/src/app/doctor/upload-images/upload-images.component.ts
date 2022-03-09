@@ -12,6 +12,9 @@ import { DisplayVal } from '../../patient/patient';
 
 
 
+
+
+
 @Component({
   selector: 'app-upload-images',
   templateUrl: './upload-images.component.html',
@@ -21,7 +24,7 @@ export class UploadImagesComponent implements OnInit {
 
   public form: FormGroup;
   public imageName: any;
-  public transferredImages: Array<ImageViewRecord> = [];
+  public imageRecord: Array<ImageViewRecord> = [];
   public error: any = null;
   private allSub = new Subscription();
   public transferImageData: any;
@@ -31,6 +34,9 @@ export class UploadImagesComponent implements OnInit {
   public imageString: any;
   
   previews: string[] = [];
+  public imageRecords$?: Observable<Array<ImageViewRecord>>;
+
+
   imageInfos?: Observable<any>;
   private sub?: Subscription;
 
@@ -40,6 +46,8 @@ export class UploadImagesComponent implements OnInit {
     new DisplayVal(ImageViewRecord.prototype.file, 'File'),
     new DisplayVal(ImageViewRecord.prototype.transferredBy, 'Transferred By')
   ];
+
+  
 
   constructor(private uploadService: FileUploadService,
               private readonly authService: AuthService,
@@ -119,12 +127,20 @@ export class UploadImagesComponent implements OnInit {
     }
   }
 
-  queryImages(): void{
+  public queryImages(): void{
     this.allSub.add(
       this.doctorService.fetchAllTransferredImages().subscribe(x => {
         const data = x as Array<ImageRecord>;
-        //console.log(Object.values(data));
-        data.map(y => this.transferredImages.push(new ImageViewRecord(y)));
+        console.log(Object.values(data)[0]);
+        console.log(Object.values(data)[1]);
+        console.log(Object.values(data)[2]);
+        console.log(Object.values(data)[3]);
+        
+        
+        data.map(y => this.imageRecord.push(new ImageViewRecord(y)));
+
+        //console.log(this.imageRecord);
+        //console.log(this.imageRecord[0] + '1333333333333333333333333333333333');
         //const result = data.map(y => this.transferredImages.push(new viewTransferredAssets(y)));
         //console.log(result);
       })
@@ -189,7 +205,11 @@ export class UploadImagesComponent implements OnInit {
 
   ngOnInit(): void {
     this.imageInfos = this.uploadService.getFiles();
+    //this.imageRecords$ = this.doctorService.fetchAllTransferredImages();
+    //console.log(this.imageRecords$ + '1979797979979799');
   }
+
+  
 
 }
 

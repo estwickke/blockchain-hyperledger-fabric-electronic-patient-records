@@ -83,7 +83,8 @@ exports.queryAllTransferredImages= async (req, res) => {
   const response = await network.invoke(networkObj, true, capitalize(userRole) + 'Contract:queryAllTransferredImages', imageName);
   //const parsedResponse = await JSON.parse(response);
   console.log(response + '84848484848484848484');
- // console.log(parsedResponse);
+  //const stringImage = JSON.stringify(parsedResponse);
+  //console.log(stringImage + '8787878787887878878787878');
   (response.error) ? res.status(400).send(response.error) : res.status(200).send(JSON.parse(response));
 };
 

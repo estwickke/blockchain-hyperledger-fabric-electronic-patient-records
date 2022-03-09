@@ -35,7 +35,7 @@ export class ImageViewRecord{
   transferredBy= '';
   ownerHosp= '';
 
-  constructor(readonly imageRecord:  ImageRecord) {
+  constructor( imageRecord:  ImageRecord) {
     this.imageName= imageRecord.imageName;
     this.file= imageRecord.file;
     this.transferredBy= imageRecord.transferredBy;

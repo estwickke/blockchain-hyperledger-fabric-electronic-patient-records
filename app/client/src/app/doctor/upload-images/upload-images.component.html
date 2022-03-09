@@ -72,8 +72,19 @@
   </button>
 </div>
 <div>
-  <tr *ngFor = "let singleImage of transferredImages">
-    <td>{{singleImage.imageName}}</td>
-  </tr>
+  <div *ngIf="imageRecord.length > 0">
+  <table class="table table-hover">
+    <tbody>
+      <tr *ngFor="let singleImage of imageRecord">
+        <td>{{imageRecord}}</td>
+        <!--<td>{{imageName}}</td>
+        <td>{{singleImage.ownerHosp}}</td>
+        <td>{{singleImage.file}}</td>
+        <td>{{singleImage.transferredBy}}</td>
+        -->
+      </tr>
+    </tbody>
+  </table>
+  </div>
 </div>
 

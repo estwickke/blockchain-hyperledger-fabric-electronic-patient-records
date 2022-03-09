@@ -33,11 +33,7 @@
                 <td class="labels"><strong>Speciality</strong></td>
                 <td>{{record.speciality}}</td>
               </tr>
-              <tr *ngFor="let singleRecord of all_images$ | async">
-                <td>{{singleRecord.imageName}}</td>
-                <td>{{singleRecord.ownerHosp}}</td>
-                <td>{{singleRecord.transferredBy}}</td>
-              </tr>
+            
             </span>
           </table>
           <div *ngIf="doctorRecordObs === undefined">
