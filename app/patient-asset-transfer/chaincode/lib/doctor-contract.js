@@ -172,24 +172,85 @@ class DoctorContract extends AdminContract {
 
         const buffer = Buffer.from(JSON.stringify(newImage));
         //await ctx.stub.putState(newImage.imageName, buffer);
-        await ctx.stub.putPrivateData('hosp1-PrivateCollection', newImage.imageName, buffer);
-        console.log("TransferImage" + '176767677676776767767767676');
+        await ctx.stub.putPrivateData('hosp1-PrivateCollection', newImage.ownerHosp, buffer);
+        console.log("TransferImage" + '176767677676776767767767676' + newImage.ownerHosp);
+        //return this.fetchLimitedFields(buffer);
     }
 
-    async queryAllTransferredImages(ctx, args) {
-        args = JSON.parse(args);
-        let imageName= "VCUImage1.jfif";
-        console.log(imageName + '182828282828828282828282');
-        let res = {};
-        const buffer = await ctx.stub.getPrivateData('hosp1-PrivateCollection', imageName);
-        try {
-        res = JSON.parse(buffer.toString());
-        console.log(res + '1878787878787878787878787');
-    } catch (err) {
-      res = err;
+    async queryAllTransferredImages(ctx) {
+        console.log('195959595');
+        let resultsIterator = await ctx.stub.getPrivateDataByRange('hosp1-PrivateCollection', '', '');
+        const allResults = [];
+        while (true) {
+            const res = await resultsIterator.iterator.next();
+
+            if (res.value && res.value.value.toString()) {
+                console.log(res.value.value.toString('utf8'));
+
+                const Key = res.value.key;
+                let imageName;
+                let ownerHosp;
+                let file;
+                let image;
+                let Record;
+                let transferredBy; 
+                try {
+                    image = JSON.parse(res.value.value.toString('utf8'));
+                    imageName= image.imageName;
+                    ownerHosp= image.ownerHosp;
+                    file= image.file;
+                    transferredBy= image.transferredBy;
+
+                } catch (err) {
+                    console.log(err);
+                    Record = res.value.value.toString('utf8');
+                }
+               // allResults.push({ Key, Record });
+                allResults.push({Key, image});
+            }
+            if (res.done) {
+                console.log('end of data');
+                await resultsIterator.iterator.close();
+                console.info(allResults);
+                return JSON.stringify(allResults);
+            }
     }
-        return res;
+}
+
+    fetchLimitedImageFields = asset => {
+        for (let i = 0; i < asset.length; i++) {
+            const obj = asset[i];
+            console.log(Object.values(obj) + '1939393939');
+            console.log(Object.keys(obj));
+            asset[i] = {
+                imageName: obj.imageName,
+                ownerHosp: obj.Key,
+                file: obj.file,
+                transferredBy: obj.transferredBy
+            };
+        }
+        return asset;
     }
+
+    async getAllResults(iterator) {
+        const allResults = [];
+        while (true) {
+            const res = await iterator.next();
+            if (res.value) {
+                // if not a getHistoryForKey iterator then key is contained in res.value.key
+                allResults.push(res.value.value.toString('utf8'));
+            }
+    
+            // check to see if we have reached then end
+            if (res.done) {
+                // explicitly close the iterator
+                await iterator.close();
+                console.log(allResults + '2151515151');
+                return allResults;
+            }
+        }
+    }
+    
 
     fetchLimitedFields = (asset, includeTimeStamp = false) => {
         for (let i = 0; i < asset.length; i++) {

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { FileUploadService } from './file-upload.service';
 import { DoctorService } from '../doctor.service';
 import { AuthService } from '../../core/auth/auth.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ImageRecord, ImageViewRecord } from '../doctor';
 import { DisplayVal } from '../../patient/patient';
@@ -27,6 +27,16 @@ class image {
 })
 export class UploadImagesComponent implements OnInit {
 
+  public hospitalList = [
+    {id: '1', name: 'Hospital 1'},
+    {id: '2', name: 'Hospital 2'},
+    {id: '3', name: 'Hospital 3'}
+  ];
+
+  ownerHospForm = new FormGroup({
+    ownerHosp : new FormControl(),
+  });
+
   public form: FormGroup;
   public imageName: any;
   public imageRecord: Array<ImageViewRecord> = [];
@@ -38,6 +48,8 @@ export class UploadImagesComponent implements OnInit {
   message: string[] = [];
   public imageString: any;
   
+  ownerHosp: string = '';
+
   previews: string[] = [];
   public imageRecords$?: Observable<Array<ImageViewRecord>>;
 
@@ -145,53 +157,48 @@ export class UploadImagesComponent implements OnInit {
         let MyImageName = Object.values(data)[1];
         let MyImageOwner = Object.values(data)[2];
         let MyImageTransferredBy = Object.values(data)[3];
+        //let testIndex = Object.values(data)[4];
 
         this.imageRecord.push(MyImageName);
         this.imageRecord.push(MyImageBlob);
         this.imageRecord.push(MyImageOwner);
         this.imageRecord.push(MyImageTransferredBy);
 
-       // this.imageRecord.
-      //  console.log(data);
-      //console.log(Object.values(data)[0]); //blob
-      //  console.log(Object.values(data)[1]); //name
-      //  console.log(Object.values(data)[2]); //owner
-      //  console.log(Object.values(data)[3]); //transferrredBy
-        
-        
-        
+        console.log(MyImageBlob + 'ImageBlob');
+        console.log(MyImageName + 'ImageName');
+        console.log(MyImageOwner + 'ImageOwner');
+        console.log(MyImageTransferredBy + 'ImageTransferredBy');
+        console.log(JSON.stringify(data) + 'stringified JSON data');
         
 
-        //console.log(this.imageRecord);
-        //console.log(this.imageRecord[0] + '1333333333333333333333333333333333');
-        //const result = data.map(y => this.transferredImages.push(new viewTransferredAssets(y)));
-        //console.log(result);
       })
     );
     }
-    
+  
+    public getOwnerHosp(event: any) {
+      this.ownerHosp = event.target.value;
+      console.log(this.ownerHosp);
+     }
+
   transfer(idx: number, file: File): void {
     this.progressInfos[idx] = { value: 0, fileName: file.name };
     console.log(file);
     //const files = file;
     const formData: FormData = new FormData();
-    const hospitalId = 'hosp2';
-    const transferredBy = 'hosp1';
+    const hospitalId = this.ownerHosp; //who we're transferring to
+    console.log(hospitalId);
+    const transferredBy = 'hosp' + this.authService.getHospitalId();  //who is transferring
+    
     const reader = new FileReader();
     
     this.form = this.fb.group({
       imageName: [file.name, Validators.required],
-      ownerHosp: [hospitalId, Validators.required],
+      ownerHosp: [hospitalId, Validators.required], //target hospital (transfer to)
       file: [this.imageString, Validators.required],
       transferredBy: [transferredBy, Validators.required],
     });
-    //let imageString = "";
-    //reader.onload = (e: any) => {
-    //  console.log(e.target.result);
-    //  this.previews.push(e.target.result);
-    //  imageString = e.target.result;
-    //};
-
+    
+    
     formData.append('file', this.imageString);
     formData.append('imageName', file.name);
     formData.append('ownerHosp', hospitalId);
@@ -206,24 +213,7 @@ export class UploadImagesComponent implements OnInit {
     this.allSub.add(
       this.doctorService.transfer(this.form.value).subscribe(x => this.transferImageData = x)
     );
- //   if (file) {
- //     this.doctorService.transfer(file).subscribe({
- //       next: (event: any) => {
- //         if (event.type === HttpEventType.UploadProgress) {
- //           this.progressInfos[idx].value = Math.round(100 * event.loaded / event.total);
- //        } else if (event instanceof HttpResponse) {
- //           const msg = 'Transferred the file successfully: ' + file.name;
- //           this.message.push(msg);
- //          // this.imageInfos = this.uploadService.getFiles();
- //         }
- //       },
- //       error: (err: any) => {
- //         this.progressInfos[idx].value = 0;
-          //was originally a real error message 
- //         const msg = 'Transferred the file successfully: '  + file.name;
- //         this.message.push(msg);
-  //      }});
-//    }
+    
   }
 
   ngOnInit(): void {

@@ -74,18 +74,18 @@ exports.queryAllTransferredImages= async (req, res) => {
   // User role from the request header is validated
   const userRole = req.headers.role;
   console.log(req + '7676767676767676767');
-  const imageName= JSON.stringify("VCUImage1.jfif");
+  const ownerHosp= JSON.stringify("hosp1");
   await validateRole([ROLE_DOCTOR], userRole, res);
-  console.log(imageName);
+  console.log(ownerHosp);
   // Set up and connect to Fabric Gateway using the username in header
   const networkObj = await network.connectToNetwork(req.headers.username);
   // Invoke the smart contract function
-  const response = await network.invoke(networkObj, true, capitalize(userRole) + 'Contract:queryAllTransferredImages', imageName);
+  const response = await network.invoke(networkObj, true, capitalize(userRole) + 'Contract:queryAllTransferredImages');
   //const parsedResponse = await JSON.parse(response);
   console.log(response + '84848484848484848484');
   //const stringImage = JSON.stringify(parsedResponse);
   //console.log(stringImage + '8787878787887878878787878');
-  (response.error) ? res.status(400).send(response.error) : res.status(200).send(JSON.parse(response));
+  (response.error) ? res.status(400).send(response.error) : res.status(200).send(JSON.parse(JSON.stringify(response)));
 };
 
 

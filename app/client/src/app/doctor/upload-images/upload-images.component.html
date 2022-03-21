@@ -30,6 +30,15 @@
       Upload
     </button>
   </div>
+  <article>
+    <label for="hospital">Hospital</label>
+    <select (change)="getOwnerHosp($event)">
+      <option value="hosp1">Hospital 1</option>
+      <option value="hosp2">Hospital 2</option>
+      <option value="hosp3">Hospital 3</option>
+    </select>
+    </article>
+  
   <div class="col-4">
     <button
       class="btn btn-success btn-sm"
@@ -78,7 +87,9 @@
     <img src="{{ imageRecord[1] }}" alt="{{ imageRecord[0] }}" height="80px" />
       <p>TransferredTo: {{imageRecord[2]}}</p>
       <p>TransferredBy: {{imageRecord[3]}}</p>
+      <p>Test: {{imageRecord[4]}}</p>
       </li>
   </ul>
 </div>
+
 
