@@ -81,13 +81,12 @@
   </button>
 </div>
 <div>
-  <ul class="list-group list-group-flush" *ngIf="imageRecord.length > 0">
+  <ul class="list-group list-group-flush" *ngFor="let image of imageRecordDisplay">
   <li class="list-group-item">
-    <p><a href="{{ imageRecord[1] }}">{{ imageRecord[0] }}</a></p>
-    <img src="{{ imageRecord[1] }}" alt="{{ imageRecord[0] }}" height="80px" />
-      <p>TransferredTo: {{imageRecord[2]}}</p>
-      <p>TransferredBy: {{imageRecord[3]}}</p>
-      <p>Test: {{imageRecord[4]}}</p>
+    <p><a href="{{ image.file }}">{{ image.imageName }}</a></p>
+    <img src="{{ image.file }}" alt="{{ image.imageName }}" height="80px" />
+      <p>TransferredTo: {{image.ownerHosp}}</p>
+      <p>TransferredBy: {{image.transferredBy}}</p>
       </li>
   </ul>
 </div>

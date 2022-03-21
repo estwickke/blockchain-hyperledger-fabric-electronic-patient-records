@@ -40,6 +40,7 @@ export class UploadImagesComponent implements OnInit {
   public form: FormGroup;
   public imageName: any;
   public imageRecord: Array<ImageViewRecord> = [];
+  public imageRecordDisplay: Array<ImageRecord> = [];
   public error: any = null;
   private allSub = new Subscription();
   public transferImageData: any;
@@ -47,6 +48,9 @@ export class UploadImagesComponent implements OnInit {
   progressInfos: any[] = [];
   message: string[] = [];
   public imageString: any;
+
+  stringImage: any;
+  objectImage: any;
   
   ownerHosp: string = '';
 
@@ -164,13 +168,26 @@ export class UploadImagesComponent implements OnInit {
         this.imageRecord.push(MyImageOwner);
         this.imageRecord.push(MyImageTransferredBy);
 
-        console.log(MyImageBlob + 'ImageBlob');
-        console.log(MyImageName + 'ImageName');
-        console.log(MyImageOwner + 'ImageOwner');
-        console.log(MyImageTransferredBy + 'ImageTransferredBy');
-        console.log(JSON.stringify(data) + 'stringified JSON data');
-        
+    
+        this.stringImage = JSON.stringify(this.imageRecord);
+        this.objectImage = JSON.parse(this.stringImage);
+        console.log(this.objectImage);
+        console.log(this.objectImage[0].image.imageName);
+        console.log(this.stringImage + '1767676767676767676');
+        let imageLength = this.objectImage.length - 1;
+        console.log(imageLength);
+        for(var i = 0; i < imageLength; i++){
+          let privateImage: ImageRecord = {
+            imageName: this.objectImage[i].image.imageName,
+            file: this.objectImage[i].image.file,
+            transferredBy: this.objectImage[i].image.transferredBy,
+            ownerHosp: this.objectImage[i].image.ownerHosp,
+            }
+          this.imageRecordDisplay.push(privateImage);
+          console.log(privateImage);
 
+        }
+        console.log(this.imageRecordDisplay);
       })
     );
     }

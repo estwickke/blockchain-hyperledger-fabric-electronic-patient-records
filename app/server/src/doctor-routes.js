@@ -82,10 +82,13 @@ exports.queryAllTransferredImages= async (req, res) => {
   // Invoke the smart contract function
   const response = await network.invoke(networkObj, true, capitalize(userRole) + 'Contract:queryAllTransferredImages');
   //const parsedResponse = await JSON.parse(response);
-  console.log(response + '84848484848484848484');
+  //console.log(response + '84848484848484848484');
+  //console.log(JSON.parse(response));
+  //console.log(JSON.stringify(response));
+  //console.log(JSON.parse(JSON.stringify(response)));
   //const stringImage = JSON.stringify(parsedResponse);
   //console.log(stringImage + '8787878787887878878787878');
-  (response.error) ? res.status(400).send(response.error) : res.status(200).send(JSON.parse(JSON.stringify(response)));
+  (response.error) ? res.status(400).send(response.error) : res.status(200).send(JSON.parse(response));
 };
 
 
