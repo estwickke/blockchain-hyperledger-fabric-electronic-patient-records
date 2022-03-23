@@ -12,6 +12,7 @@ import { DisplayVal } from '../../patient/patient';
 
 
 class image {
+  imageID!: string;
   imageName!: string;
   File!: string;
   ownerHosp!: string;
@@ -53,6 +54,7 @@ export class UploadImagesComponent implements OnInit {
   objectImage: any;
   
   ownerHosp: string = '';
+  //imageID: string = '';
 
   previews: string[] = [];
   public imageRecords$?: Observable<Array<ImageViewRecord>>;
@@ -152,44 +154,167 @@ export class UploadImagesComponent implements OnInit {
   }
 
   public queryImages(): void{
-    var imageName = '';
-    //ImageRecord.imageName = "name";
-    this.allSub.add(
-      this.doctorService.fetchAllTransferredImages().subscribe(x => {
-        const data = x as Array<ImageRecord>;
-        let MyImageBlob = Object.values(data)[0];
-        let MyImageName = Object.values(data)[1];
-        let MyImageOwner = Object.values(data)[2];
-        let MyImageTransferredBy = Object.values(data)[3];
-        //let testIndex = Object.values(data)[4];
-
-        this.imageRecord.push(MyImageName);
-        this.imageRecord.push(MyImageBlob);
-        this.imageRecord.push(MyImageOwner);
-        this.imageRecord.push(MyImageTransferredBy);
-
+    const formData: FormData = new FormData();
+    const transferredBy = 'hosp' + this.authService.getHospitalId();  //who is transferring
+    this.form = this.fb.group({
+      transferredBy: [transferredBy, Validators.required],
+    });
     
-        this.stringImage = JSON.stringify(this.imageRecord);
-        this.objectImage = JSON.parse(this.stringImage);
-        console.log(this.objectImage);
-        console.log(this.objectImage[0].image.imageName);
-        console.log(this.stringImage + '1767676767676767676');
-        let imageLength = this.objectImage.length - 1;
-        console.log(imageLength);
-        for(var i = 0; i < imageLength; i++){
-          let privateImage: ImageRecord = {
-            imageName: this.objectImage[i].image.imageName,
-            file: this.objectImage[i].image.file,
-            transferredBy: this.objectImage[i].image.transferredBy,
-            ownerHosp: this.objectImage[i].image.ownerHosp,
-            }
-          this.imageRecordDisplay.push(privateImage);
-          console.log(privateImage);
-
-        }
-        console.log(this.imageRecordDisplay);
-      })
-    );
+    console.log(this.ownerHosp + '236363636636');
+    //console.log(this.imageID + '237373737');
+    formData.append('transferredBy', transferredBy);
+    var imageName = '';
+    console.log(transferredBy + '167676776766');
+    console.log(this.form.value + '16868686868686');
+    //ImageRecord.imageName = "name";
+    if (transferredBy === 'hosp1'){
+      this.allSub.add(
+        this.doctorService.fetchAllTransferredImagesHosp1().subscribe(x => {
+          this.imageRecord = [];
+          const data = x as Array<ImageRecord>;
+          let count: number = 0;
+          //while (Object.values(data)[count] != null){
+          for(var i = 0; i <data.length; i++){
+            let MyImageBlob = Object.values(data)[i];
+            
+         // let MyImageName = Object.values(data)[1];
+         // let MyImageOwner = Object.values(data)[2];
+         // let MyImageTransferredBy = Object.values(data)[3];
+          //let testIndex = Object.values(data)[4];
+  
+         // this.imageRecord.push(MyImageName);
+            this.imageRecord.push(MyImageBlob);
+          }
+         // this.imageRecord.push(MyImageOwner);
+         // this.imageRecord.push(MyImageTransferredBy);
+  
+      
+          this.stringImage = JSON.stringify(this.imageRecord);
+          this.objectImage = JSON.parse(this.stringImage);
+          console.log(this.objectImage);
+          //console.log(this.objectImage[0].image.imageName);
+          //console.log(this.stringImage + '1767676767676767676');
+          let imageLength = this.objectImage.length;
+          console.log(imageLength);
+          this.imageRecordDisplay = [];
+          for(var i = 0; i < imageLength; i++){
+            let privateImage: ImageRecord = {
+              imageName: this.objectImage[i].image.imageName,
+              file: this.objectImage[i].image.file,
+              transferredBy: this.objectImage[i].image.transferredBy,
+              ownerHosp: this.objectImage[i].image.ownerHosp,
+              }
+              while (this.objectImage[i].image.imageName =! null){
+                this.imageRecordDisplay.push(privateImage);
+                console.log(privateImage);
+                break;
+              }
+    
+          }
+          console.log(this.imageRecordDisplay);
+        
+        })
+      );
+    }
+    else if (transferredBy === 'hosp2'){
+      this.allSub.add(
+        this.doctorService.fetchAllTransferredImagesHosp2().subscribe(x => {
+          this.imageRecord = [];
+          const data = x as Array<ImageRecord>;
+          let count: number = 0;
+          //while (Object.values(data)[count] != null){
+          for(var i = 0; i <data.length; i++){
+            let MyImageBlob = Object.values(data)[i];
+            
+         // let MyImageName = Object.values(data)[1];
+         // let MyImageOwner = Object.values(data)[2];
+         // let MyImageTransferredBy = Object.values(data)[3];
+          //let testIndex = Object.values(data)[4];
+  
+         // this.imageRecord.push(MyImageName);
+            this.imageRecord.push(MyImageBlob);
+          }
+         // this.imageRecord.push(MyImageOwner);
+         // this.imageRecord.push(MyImageTransferredBy);
+  
+      
+          this.stringImage = JSON.stringify(this.imageRecord);
+          this.objectImage = JSON.parse(this.stringImage);
+          console.log(this.objectImage);
+          //console.log(this.objectImage[0].image.imageName);
+          //console.log(this.stringImage + '1767676767676767676');
+          let imageLength = this.objectImage.length;
+          console.log(imageLength);
+          this.imageRecordDisplay = [];
+          for(var i = 0; i < imageLength; i++){
+            let privateImage: ImageRecord = {
+              imageName: this.objectImage[i].image.imageName,
+              file: this.objectImage[i].image.file,
+              transferredBy: this.objectImage[i].image.transferredBy,
+              ownerHosp: this.objectImage[i].image.ownerHosp,
+              }
+              while (this.objectImage[i].image.imageName =! null){
+                this.imageRecordDisplay.push(privateImage);
+                console.log(privateImage);
+                break;
+              }
+    
+          }
+          console.log(this.imageRecordDisplay);
+        
+        })
+      );
+    }
+    else if (transferredBy === 'hosp3'){
+      this.allSub.add(
+        this.doctorService.fetchAllTransferredImagesHosp3().subscribe(x => {
+          this.imageRecord = [];
+          const data = x as Array<ImageRecord>;
+          let count: number = 0;
+          //while (Object.values(data)[count] != null){
+          for(var i = 0; i <data.length; i++){
+            let MyImageBlob = Object.values(data)[i];
+            
+         // let MyImageName = Object.values(data)[1];
+         // let MyImageOwner = Object.values(data)[2];
+         // let MyImageTransferredBy = Object.values(data)[3];
+          //let testIndex = Object.values(data)[4];
+  
+         // this.imageRecord.push(MyImageName);
+            this.imageRecord.push(MyImageBlob);
+          }
+         // this.imageRecord.push(MyImageOwner);
+         // this.imageRecord.push(MyImageTransferredBy);
+  
+      
+          this.stringImage = JSON.stringify(this.imageRecord);
+          this.objectImage = JSON.parse(this.stringImage);
+          console.log(this.objectImage);
+          //console.log(this.objectImage[0].image.imageName);
+          //console.log(this.stringImage + '1767676767676767676');
+          let imageLength = this.objectImage.length;
+          console.log(imageLength);
+          this.imageRecordDisplay = [];
+          for(var i = 0; i < imageLength; i++){
+            let privateImage: ImageRecord = {
+              imageName: this.objectImage[i].image.imageName,
+              file: this.objectImage[i].image.file,
+              transferredBy: this.objectImage[i].image.transferredBy,
+              ownerHosp: this.objectImage[i].image.ownerHosp,
+              }
+              while (this.objectImage[i].image.imageName =! null){
+                this.imageRecordDisplay.push(privateImage);
+                console.log(privateImage);
+                break;
+              }
+    
+          }
+          console.log(this.imageRecordDisplay);
+        
+        })
+      );
+    }
+    
     }
   
     public getOwnerHosp(event: any) {
@@ -202,12 +327,20 @@ export class UploadImagesComponent implements OnInit {
     console.log(file);
     //const files = file;
     const formData: FormData = new FormData();
-    const hospitalId = this.ownerHosp; //who we're transferring to
-    console.log(hospitalId);
+
+    var min = 0;
+    var max = 100;
+    var randomGenerator = Math.floor(Math.random() * (max - min+1)) + min;
+    const keyCounter = 'ID-' + randomGenerator;
+    //console.log(keyCounter); //THERE
+
+    const hospitalId = this.ownerHosp + '-' + keyCounter; //who we're transferring to
     const transferredBy = 'hosp' + this.authService.getHospitalId();  //who is transferring
-    
+    //const imageIDName = this.imageID;
     const reader = new FileReader();
     
+
+
     this.form = this.fb.group({
       imageName: [file.name, Validators.required],
       ownerHosp: [hospitalId, Validators.required], //target hospital (transfer to)
@@ -215,7 +348,9 @@ export class UploadImagesComponent implements OnInit {
       transferredBy: [transferredBy, Validators.required],
     });
     
-    
+    console.log(this.ownerHosp + '236363636636');
+    //console.log(this.imageID + '237373737');
+
     formData.append('file', this.imageString);
     formData.append('imageName', file.name);
     formData.append('ownerHosp', hospitalId);

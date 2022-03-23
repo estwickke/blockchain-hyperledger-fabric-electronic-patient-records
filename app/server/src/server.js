@@ -207,7 +207,10 @@ app.patch('/patients/:patientId/details/medical', authenticateJWT, doctorRoutes.
 app.get('/doctors/:hospitalId([0-9]+)/:doctorId(HOSP[0-9]+\-DOC[0-9]+)', authenticateJWT, doctorRoutes.getDoctorById);
 
 app.post('/doctors/transfer', authenticateJWT, doctorRoutes.transferImage);
-app.get('/doctors/allTransferredImages', authenticateJWT, doctorRoutes.queryAllTransferredImages);
+app.get('/doctors/allTransferredImagesHosp1', authenticateJWT, doctorRoutes.queryAllTransferredImagesHosp1);
+app.get('/doctors/allTransferredImagesHosp2', authenticateJWT, doctorRoutes.queryAllTransferredImagesHosp2);
+app.get('/doctors/allTransferredImagesHosp3', authenticateJWT, doctorRoutes.queryAllTransferredImagesHosp3);
+
 
 // //////////////////////////////// Patient Routes //////////////////////////////////////
 app.get('/patients/:patientId', authenticateJWT, patientRoutes.getPatientById);

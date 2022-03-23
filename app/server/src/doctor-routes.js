@@ -9,6 +9,7 @@
 // Bring common classes into scope, and Fabric SDK network class
 const {ROLE_DOCTOR, capitalize, getMessage, validateRole} = require('../utils.js');
 const network = require('../../patient-asset-transfer/application-javascript/app.js');
+const e = require('express');
 
 
 /**
@@ -58,29 +59,131 @@ exports.transferImage = async (req, res) => {
   //let args = req.body;
   const data = JSON.stringify(req.body);
   const args = [data];
+
+  const dataParsed = JSON.parse(data);
+  console.log(JSON.stringify(dataParsed.ownerHosp) + '161616161616161');
   console.log(JSON.stringify(data) + '6161616166161616616');
-  //console.log(res);
-  //console.log(req);
-  args.uploadedBy = req.headers.username;
-  // Set up and connect to Fabric Gateway
-  const networkObj = await network.connectToNetwork(req.headers.username);
-  // Invoke the smart contract function
-  // Getting held up here, target whats returning error 500,  Error: Illegal value for keyvalue element of type string: undefined (not a string)
-  const response = await network.invoke(networkObj, false, capitalize(userRole) + 'Contract:transferImage', args); //compare args here w similar func in admin routes
-  (response.error) ? res.status(500).send(response.error) : res.status(200).send(getMessage(false, 'Successfully Transferred Image.'));
+
+  let databaseTarget = dataParsed.ownerHosp;
+  const database = databaseTarget.substring(0,5);
+  console.log(database + 'DATABASE');
+
+  if (database === 'hosp1'){
+    args.uploadedBy = req.headers.username;
+    // Set up and connect to Fabric Gateway
+    const networkObj = await network.connectToNetwork(req.headers.username);
+    // Invoke the smart contract function
+    // Getting held up here, target whats returning error 500,  Error: Illegal value for keyvalue element of type string: undefined (not a string)
+    const response = await network.invoke(networkObj, false, capitalize(userRole) + 'Contract:transferImageHosp1', args); //compare args here w similar func in admin routes
+    (response.error) ? res.status(500).send(response.error) : res.status(200).send(getMessage(false, 'Successfully Transferred Image.'));
+  }
+  else if(database === 'hosp2'){
+    args.uploadedBy = req.headers.username;
+    // Set up and connect to Fabric Gateway
+    const networkObj = await network.connectToNetwork(req.headers.username);
+    // Invoke the smart contract function
+    // Getting held up here, target whats returning error 500,  Error: Illegal value for keyvalue element of type string: undefined (not a string)
+    const response = await network.invoke(networkObj, false, capitalize(userRole) + 'Contract:transferImageHosp2', args); //compare args here w similar func in admin routes
+    (response.error) ? res.status(500).send(response.error) : res.status(200).send(getMessage(false, 'Successfully Transferred Image.'));
+  }
+  else if(database === 'hosp3'){
+    args.uploadedBy = req.headers.username;
+    // Set up and connect to Fabric Gateway
+    const networkObj = await network.connectToNetwork(req.headers.username);
+    // Invoke the smart contract function
+    // Getting held up here, target whats returning error 500,  Error: Illegal value for keyvalue element of type string: undefined (not a string)
+    const response = await network.invoke(networkObj, false, capitalize(userRole) + 'Contract:transferImageHosp3', args); //compare args here w similar func in admin routes
+    (response.error) ? res.status(500).send(response.error) : res.status(200).send(getMessage(false, 'Successfully Transferred Image.'));
+  }
+
 };
 
-exports.queryAllTransferredImages= async (req, res) => {
+exports.queryAllTransferredImagesHosp1= async (req, res) => {
   // User role from the request header is validated
   const userRole = req.headers.role;
-  console.log(req + '7676767676767676767');
-  const ownerHosp= JSON.stringify("hosp1");
+  //console.log(req + '7676767676767676767');
+  const data = JSON.stringify(req.body);
+  const dataParsed = JSON.parse(data);
+
+  const hospitalId = parseInt(req.params.hospitalId);
+
+  console.log(hospitalId);
+
+  console.log(data + '108080');
+
+  console.log(JSON.stringify(dataParsed.transferredBy) + '161616161616161');
+
   await validateRole([ROLE_DOCTOR], userRole, res);
-  console.log(ownerHosp);
+  //console.log(ownerHosp);
+  //console.log(req.body + '108080808080808080');
   // Set up and connect to Fabric Gateway using the username in header
   const networkObj = await network.connectToNetwork(req.headers.username);
   // Invoke the smart contract function
-  const response = await network.invoke(networkObj, true, capitalize(userRole) + 'Contract:queryAllTransferredImages');
+  const response = await network.invoke(networkObj, true, capitalize(userRole) + 'Contract:queryAllTransferredImagesHosp1');
+  //const parsedResponse = await JSON.parse(response);
+  //console.log(response + '84848484848484848484');
+  //console.log(JSON.parse(response));
+  //console.log(JSON.stringify(response));
+  //console.log(JSON.parse(JSON.stringify(response)));
+  //const stringImage = JSON.stringify(parsedResponse);
+  //console.log(stringImage + '8787878787887878878787878');
+  (response.error) ? res.status(400).send(response.error) : res.status(200).send(JSON.parse(response));
+};
+
+exports.queryAllTransferredImagesHosp2= async (req, res) => {
+  // User role from the request header is validated
+  const userRole = req.headers.role;
+  //console.log(req + '7676767676767676767');
+  const data = JSON.stringify(req.body);
+  const dataParsed = JSON.parse(data);
+
+  const hospitalId = parseInt(req.params.hospitalId);
+
+  console.log(hospitalId);
+
+  console.log(data + '108080');
+
+  console.log(JSON.stringify(dataParsed.transferredBy) + '161616161616161');
+
+  await validateRole([ROLE_DOCTOR], userRole, res);
+  //console.log(ownerHosp);
+  //console.log(req.body + '108080808080808080');
+  // Set up and connect to Fabric Gateway using the username in header
+  const networkObj = await network.connectToNetwork(req.headers.username);
+  // Invoke the smart contract function
+  const response = await network.invoke(networkObj, true, capitalize(userRole) + 'Contract:queryAllTransferredImagesHosp2');
+  //const parsedResponse = await JSON.parse(response);
+  //console.log(response + '84848484848484848484');
+  //console.log(JSON.parse(response));
+  //console.log(JSON.stringify(response));
+  //console.log(JSON.parse(JSON.stringify(response)));
+  //const stringImage = JSON.stringify(parsedResponse);
+  //console.log(stringImage + '8787878787887878878787878');
+  (response.error) ? res.status(400).send(response.error) : res.status(200).send(JSON.parse(response));
+};
+
+exports.queryAllTransferredImagesHosp3= async (req, res) => {
+  // User role from the request header is validated
+  const userRole = req.headers.role;
+  //console.log(req + '7676767676767676767');
+  const data = JSON.stringify(req.body);
+  const dataParsed = JSON.parse(data);
+
+  const hospitalId = parseInt(req.params.hospitalId);
+
+  console.log(hospitalId);
+
+  console.log(data + '108080');
+
+  console.log(JSON.stringify(dataParsed.transferredBy) + '161616161616161');
+
+  await validateRole([ROLE_DOCTOR], userRole, res);
+  //console.log(ownerHosp);
+  //console.log(req.body + '108080808080808080');
+  // Set up and connect to Fabric Gateway using the username in header
+  const networkObj = await network.connectToNetwork(req.headers.username);
+  // Invoke the smart contract function
+  const response = await network.invoke(networkObj, true, capitalize(userRole) + 'Contract:queryAllTransferredImagesHosp3');
   //const parsedResponse = await JSON.parse(response);
   //console.log(response + '84848484848484848484');
   //console.log(JSON.parse(response));

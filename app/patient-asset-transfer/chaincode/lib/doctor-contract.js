@@ -165,6 +165,29 @@ class DoctorContract extends AdminContract {
 
         //const image = await PrimaryContract.prototype.readImage(ctx, imageName);
         let newImage = await new Image(args.imageName, args.ownerHosp, args.file, args.transferredBy);
+
+        console.log(newImage);
+        //if (newHospOwner !== image.ownerHosp) {
+        //    image.ownerHosp = newHospOwner;
+        // }
+
+        const buffer = Buffer.from(JSON.stringify(newImage));
+        //await ctx.stub.putState(newImage.imageName, buffer);
+
+        //let temp = newImage.imageID;
+        //let imageIDString = temp.toString();
+
+        await ctx.stub.putPrivateData('hosp1-PrivateCollection', newImage.ownerHosp, buffer);
+        console.log("TransferImage" + '176767677676776767767767676' + newImage.ownerHosp);
+        //return this.fetchLimitedFields(buffer);
+    }
+
+    async transferImageHosp1(ctx, args) {
+        args = JSON.parse(args);
+        //let newHospOwner = args.ownerHosp;
+
+        //const image = await PrimaryContract.prototype.readImage(ctx, imageName);
+        let newImage = await new Image(args.imageName, args.ownerHosp, args.file, args.transferredBy);
         console.log(newImage);
         //if (newHospOwner !== image.ownerHosp) {
         //    image.ownerHosp = newHospOwner;
@@ -177,7 +200,43 @@ class DoctorContract extends AdminContract {
         //return this.fetchLimitedFields(buffer);
     }
 
-    async queryAllTransferredImages(ctx) {
+    async transferImageHosp2(ctx, args) {
+        args = JSON.parse(args);
+        //let newHospOwner = args.ownerHosp;
+
+        //const image = await PrimaryContract.prototype.readImage(ctx, imageName);
+        let newImage = await new Image(args.imageName, args.ownerHosp, args.file, args.transferredBy);
+        console.log(newImage);
+        //if (newHospOwner !== image.ownerHosp) {
+        //    image.ownerHosp = newHospOwner;
+        // }
+
+        const buffer = Buffer.from(JSON.stringify(newImage));
+        //await ctx.stub.putState(newImage.imageName, buffer);
+        await ctx.stub.putPrivateData('hosp2-PrivateCollection', newImage.ownerHosp, buffer);
+        console.log("TransferImage" + '176767677676776767767767676' + newImage.ownerHosp);
+        //return this.fetchLimitedFields(buffer);
+    }
+
+    async transferImageHosp3(ctx, args) {
+        args = JSON.parse(args);
+        //let newHospOwner = args.ownerHosp;
+
+        //const image = await PrimaryContract.prototype.readImage(ctx, imageName);
+        let newImage = await new Image(args.imageName, args.ownerHosp, args.file, args.transferredBy);
+        console.log(newImage);
+        //if (newHospOwner !== image.ownerHosp) {
+        //    image.ownerHosp = newHospOwner;
+        // }
+
+        const buffer = Buffer.from(JSON.stringify(newImage));
+        //await ctx.stub.putState(newImage.imageName, buffer);
+        await ctx.stub.putPrivateData('hosp3-PrivateCollection', newImage.ownerHosp, buffer);
+        console.log("TransferImage" + '176767677676776767767767676' + newImage.ownerHosp);
+        //return this.fetchLimitedFields(buffer);
+    }
+
+    async queryAllTransferredImagesHosp1(ctx) {
         console.log('195959595');
         let resultsIterator = await ctx.stub.getPrivateDataByRange('hosp1-PrivateCollection', '', '');
         const allResults = [];
@@ -188,6 +247,131 @@ class DoctorContract extends AdminContract {
                 console.log(res.value.value.toString('utf8'));
 
                 const Key = res.value.key;
+                let imageName;
+                let ownerHosp;
+                let file;
+                let image;
+                let Record;
+                let transferredBy; 
+                try {
+                    image = JSON.parse(res.value.value.toString('utf8'));
+                    imageName= image.imageName;
+                    ownerHosp= image.ownerHosp;
+                    file= image.file;
+                    transferredBy= image.transferredBy;
+
+                } catch (err) {
+                    console.log(err);
+                    Record = res.value.value.toString('utf8');
+                }
+               // allResults.push({ Key, Record });
+                allResults.push({Key, image});
+            }
+            if (res.done) {
+                console.log('end of data');
+                await resultsIterator.iterator.close();
+                console.info(allResults);
+                return JSON.stringify(allResults);
+            }
+    }
+}
+
+async queryAllTransferredImagesHosp2(ctx) {
+    console.log('195959595');
+    let resultsIterator = await ctx.stub.getPrivateDataByRange('hosp2-PrivateCollection', '', '');
+    const allResults = [];
+    while (true) {
+        const res = await resultsIterator.iterator.next();
+
+        if (res.value && res.value.value.toString()) {
+            console.log(res.value.value.toString('utf8'));
+
+            const Key = res.value.key;
+            let imageName;
+            let ownerHosp;
+            let file;
+            let image;
+            let Record;
+            let transferredBy; 
+            try {
+                image = JSON.parse(res.value.value.toString('utf8'));
+                imageName= image.imageName;
+                ownerHosp= image.ownerHosp;
+                file= image.file;
+                transferredBy= image.transferredBy;
+
+            } catch (err) {
+                console.log(err);
+                Record = res.value.value.toString('utf8');
+            }
+           // allResults.push({ Key, Record });
+            allResults.push({Key, image});
+        }
+        if (res.done) {
+            console.log('end of data');
+            await resultsIterator.iterator.close();
+            console.info(allResults);
+            return JSON.stringify(allResults);
+        }
+}
+}
+
+async queryAllTransferredImagesHosp3(ctx) {
+    console.log('195959595');
+    let resultsIterator = await ctx.stub.getPrivateDataByRange('hosp3-PrivateCollection', '', '');
+    const allResults = [];
+    while (true) {
+        const res = await resultsIterator.iterator.next();
+
+        if (res.value && res.value.value.toString()) {
+            console.log(res.value.value.toString('utf8'));
+
+            const Key = res.value.key;
+            let imageName;
+            let ownerHosp;
+            let file;
+            let image;
+            let Record;
+            let transferredBy; 
+            try {
+                image = JSON.parse(res.value.value.toString('utf8'));
+                imageName= image.imageName;
+                ownerHosp= image.ownerHosp;
+                file= image.file;
+                transferredBy= image.transferredBy;
+
+            } catch (err) {
+                console.log(err);
+                Record = res.value.value.toString('utf8');
+            }
+           // allResults.push({ Key, Record });
+            allResults.push({Key, image});
+        }
+        if (res.done) {
+            console.log('end of data');
+            await resultsIterator.iterator.close();
+            console.info(allResults);
+            return JSON.stringify(allResults);
+        }
+}
+}
+
+    async queryAllTransferredImages(ctx) {
+        console.log('195959595');
+        let resultsIterator = await ctx.stub.getPrivateDataByRange('hosp1-PrivateCollection', '', '');
+        const allResults = [];
+        while (true) {
+            const res = await resultsIterator.iterator.next();
+
+            if (res.value && res.value.value.toString()) {
+                console.log(res.value.value.toString('utf8'));
+
+                //var min = 0;
+                //var max = 100;
+                //var keyCounter = Math.floor(Math.random() * (max - min+1)) + min;
+                //var keyCounter = 0;
+                const Key = res.value.key;
+                //keyCounter++;
                 let imageName;
                 let ownerHosp;
                 let file;

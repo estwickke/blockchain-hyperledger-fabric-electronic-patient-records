@@ -33,6 +33,7 @@
   <article>
     <label for="hospital">Hospital</label>
     <select (change)="getOwnerHosp($event)">
+      <option value="none" selected disabled hidden>Select an Option</option>
       <option value="hosp1">Hospital 1</option>
       <option value="hosp2">Hospital 2</option>
       <option value="hosp3">Hospital 3</option>

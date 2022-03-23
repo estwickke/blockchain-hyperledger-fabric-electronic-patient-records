@@ -34,6 +34,18 @@
       "endorsementPolicy": {
         "signaturePolicy": "OR('hosp2MSP.member')"
       }
+    },
+    {
+      "name": "hosp3-PrivateCollection",
+      "policy": "OR('hosp3MSP.member')",
+      "requiredPeerCount": 0,
+      "maxPeerCount": 1,
+      "blockToLive":0,
+      "memberOnlyRead": true,
+      "memberOnlyWrite": false,
+      "endorsementPolicy": {
+        "signaturePolicy": "OR('hosp3MSP.member')"
+      }
     }
 ]
    

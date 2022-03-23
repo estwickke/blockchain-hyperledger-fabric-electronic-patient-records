@@ -28,6 +28,7 @@ export class DoctorService {
 
   public transfer(transferImageData: any): Observable<any> {
     console.log(transferImageData);
+    //console.log(transferImageData.imageID);
     console.log(transferImageData.imageName);
     console.log(transferImageData.ownerHosp);
     console.log(transferImageData.transferredBy);
@@ -37,8 +38,19 @@ export class DoctorService {
     return this.http.post(this.doctorURL + '/transfer', transferImageData);
   }
   
-  public fetchAllTransferredImages(): Observable<any> {
-    return this.http.get(this.doctorURL + '/allTransferredImages');
+  public fetchAllTransferredImagesHosp1(): Observable<any> {
+    
+    return this.http.get(this.doctorURL + '/allTransferredImagesHosp1');
+  }
+
+  public fetchAllTransferredImagesHosp2(): Observable<any> {
+    
+    return this.http.get(this.doctorURL + '/allTransferredImagesHosp2');
+  }
+
+  public fetchAllTransferredImagesHosp3(): Observable<any> {
+    
+    return this.http.get(this.doctorURL + '/allTransferredImagesHosp3');
   }
 
   
