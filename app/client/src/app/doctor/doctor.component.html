@@ -1,48 +1,184 @@
-<app-toolbar text="Doctor {{doctorId}}">
-  <app-toolbar-link text="View patients" icon="users" [routerLink]="['patients']">
+<app-toolbar text="Doctor {{doctorId}}'s Dashboard'">
+  <app-toolbar-link text="File Sharing Center" [routerLink]="['upload-images']">
   </app-toolbar-link>
-  <!--
-  <app-toolbar-link text="Upload Image" [routerLink]="['upload']">
+  <app-toolbar-link text="View Patients" icon="users" [routerLink]="['patients']">
   </app-toolbar-link>
--->
   <app-toolbar-button text="Refresh" icon="refresh" (click)="refresh()"></app-toolbar-button>
 </app-toolbar>
 <br><br><br>
 
-<div class="sidebar-layout-bottom-row p-3 container-fluid">
+<div class="container">
   <div class="row">
-    <div class="col-xl-6 col-sm-12">
+    <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Details</h5>
+        <table *ngIf="doctorRecordObs | async as record">
+          <span>
+            <tr>
+              <td class="labels"><strong>Doctor ID</strong></td>
+              <td>{{doctorId}}</td>
+            </tr>
+            <tr>
+              <td class="labels"><strong>First Name</strong></td>
+              <td>{{record.firstName}}</td>
+            </tr>
+            <tr>
+              <td class="labels"><strong>Last Name</strong></td>
+              <td>{{record.lastName}}</td>
+            </tr>
+            <tr>
+              <td class="labels"><strong>Speciality</strong></td>
+              <td>{{record.speciality}}</td>
+            </tr>
+
+          </span>
+        </table>
+        <div *ngIf="doctorRecordObs === undefined">
+          <p>You are not authorized to view doctor details.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <div class="col">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Details</h5>
-          <table *ngIf="doctorRecordObs | async as record">
+          <div class="card-title">Transactions</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Date</th>
+      <th scope="col">Image</th>
+      <th scope="col">Action</th>
+      <th scope="col">Doctor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">4/6/2022</th>
+      <td> IMAGE </td>
+      <td>Viewed</td>
+      <td>HOSP1-DOC2</td>
+    </tr>
+    <tr>
+      <th scope="row">4/5/2022</th>
+      <td> IMAGE </td>
+      <td>Transferred</td>
+      <td>HOSP2-DOC1</td>
+    </tr>
+    <tr>
+      <th scope="row">4/5/2022</th>
+      <td> IMAGE </td>
+      <td>Uploaded</td>
+      <td>HOSP1-DOC1</td>
+    </tr>
+  </tbody>
+</table>
+
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Data Points</h5>
+          <!-- <table ngIf="doctorRecordObs | async as record"> -->
+          <table>
             <span>
               <tr>
-                <td class="labels"><strong>Doctor ID</strong></td>
-                <td>{{doctorId}}</td>
+                <td class="labels"><strong>Data Point 1</strong></td>
+                <td>Test</td>
               </tr>
               <tr>
-                <td class="labels"><strong>First Name</strong></td>
-                <td>{{record.firstName}}</td>
+                <td class="labels"><strong>Data Point 2</strong></td>
+                <td>Test</td>
               </tr>
               <tr>
-                <td class="labels"><strong>Last Name</strong></td>
-                <td>{{record.lastName}}</td>
+                <td class="labels"><strong>Data Point 3</strong></td>
+                <td>Test</td>
               </tr>
               <tr>
-                <td class="labels"><strong>Speciality</strong></td>
-                <td>{{record.speciality}}</td>
+                <td class="labels"><strong>Data Point 4</strong></td>
+                <td>Test</td>
               </tr>
-            
+
             </span>
           </table>
-          <div *ngIf="doctorRecordObs === undefined">
+        <!--  <divngIf="doctorRecordObs === undefined">
             <p>You are not authorized to view doctor details.</p>
-          </div>
+          </div> 
+          -->
         </div>
-        <h5 class="card-title">Upload Images</h5>
-        <app-upload-images></app-upload-images>
-      </div>
+    </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Data Points</h5>
+          <!-- <table ngIf="doctorRecordObs | async as record"> -->
+          <table>
+            <span>
+              <tr>
+                <td class="labels"><strong>Data Point 1</strong></td>
+                <td>Test</td>
+              </tr>
+              <tr>
+                <td class="labels"><strong>Data Point 2</strong></td>
+                <td>Test</td>
+              </tr>
+              <tr>
+                <td class="labels"><strong>Data Point 3</strong></td>
+                <td>Test</td>
+              </tr>
+              <tr>
+                <td class="labels"><strong>Data Point 4</strong></td>
+                <td>Test</td>
+              </tr>
+
+            </span>
+          </table>
+        <!--  <divngIf="doctorRecordObs === undefined">
+            <p>You are not authorized to view doctor details.</p>
+          </div> 
+          -->
+        </div>
+    </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Data Points</h5>
+          <!-- <table ngIf="doctorRecordObs | async as record"> -->
+          <table>
+            <span>
+              <tr>
+                <td class="labels"><strong>Data Point 1</strong></td>
+                <td>Test</td>
+              </tr>
+              <tr>
+                <td class="labels"><strong>Data Point 2</strong></td>
+                <td>Test</td>
+              </tr>
+              <tr>
+                <td class="labels"><strong>Data Point 3</strong></td>
+                <td>Test</td>
+              </tr>
+              <tr>
+                <td class="labels"><strong>Data Point 4</strong></td>
+                <td>Test</td>
+              </tr>
+
+            </span>
+          </table>
+        <!--  <divngIf="doctorRecordObs === undefined">
+            <p>You are not authorized to view doctor details.</p>
+          </div> 
+          -->
+        </div>
+    </div>
     </div>
   </div>
 </div>

@@ -8,6 +8,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Subscription } from 'rxjs';
 import { ImageRecord, ImageViewRecord } from '../doctor';
 import { DisplayVal } from '../../patient/patient';
+import { ActivatedRoute, Params } from '@angular/router';
+
 
 
 
@@ -55,6 +57,7 @@ export class UploadImagesComponent implements OnInit {
   
   ownerHosp: string = '';
   //imageID: string = '';
+  public doctorId: any;
 
   previews: string[] = [];
   public imageRecords$?: Observable<Array<ImageViewRecord>>;
@@ -370,8 +373,7 @@ export class UploadImagesComponent implements OnInit {
 
   ngOnInit(): void {
     this.imageInfos = this.uploadService.getFiles();
-    //this.imageRecords$ = this.doctorService.fetchAllTransferredImages();
-    //console.log(this.imageRecords$ + '1979797979979799');
+    this.queryImages();
   }
 
   
