@@ -9,6 +9,9 @@ import { AuthService } from '../core/auth/auth.service';
 import { DoctorViewRecord } from './doctor';
 import { DoctorService } from './doctor.service';
 
+import { Chart } from 'node_modules/chart.js';
+
+
 
 @Component({
   selector: 'app-doctor',
@@ -36,11 +39,14 @@ export class DoctorComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    
     this.sub = this.route.params
       .subscribe((params: Params) => {
         this.doctorId = params.doctorId;
         this.refresh();
       });
+
+      
   }
 
   ngOnDestroy(): void {

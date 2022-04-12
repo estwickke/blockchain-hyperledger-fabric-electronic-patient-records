@@ -1,14 +1,13 @@
-<app-toolbar text="File Sharing Center for Doctor {{doctorId}}">
+<app-toolbar text="File Sharing Center">
   <app-toolbar-button text="Refresh" icon="refresh" (click)="queryImages()"></app-toolbar-button>
 </app-toolbar>
 <br><br><br>
 
 <div class="container">
   <div class="row">
-    <div class="col">
       <div class="card">
         <div class="card-body">
-          <div class="card-header">Upload File Locally</div>
+          <div class="card-header">Upload File</div>
 
            <label class="btn btn-default p-0">
              <input type="file" accept="image/*" multiple (change)="selectFiles($event)" />
@@ -30,85 +29,166 @@
               (click)="uploadFiles()">
               Upload
            </button>
-           
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="card">
-        <div class="card-body">
-      
-          <div class="card-header">Images Stored Locally</div>
-            <ul
-              class="list-group list-group-flush"
-              *ngFor="let image of imageInfos | async">
-              <li class="list-group-item">
-                <p><a href="{{ image.url }}">{{ image.name }}</a></p>
-                <img src="{{ image.url }}" alt="{{ image.name }}" height="80px" />
-              </li>
-            </ul>
-            
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-
-      <div class="card">
-        <div class="card-body">
-          <div class="card-header">Transfer Privately to Outside Organizations</div>
-
-          <label class="btn btn-default p-0">
-            <input type="file" accept="image/*" multiple (change)="selectFiles($event)" />
-          </label>
-
-          <article>
-            <label for="hospital">Hospital</label>
-              <select (change)="getOwnerHosp($event)">
-                <option value="none" selected disabled hidden>Select an Option</option>
-                <option value="hosp1">Hospital 1</option>
-                <option value="hosp2">Hospital 2</option>
-                <option value="hosp3">Hospital 3</option>
-              </select>
-          </article>
-
-          <div>
-            <img *ngFor='let preview of previews' [src]="preview" class="preview">
-          </div>
-
-          <div *ngIf="message.length" class="alert alert-secondary my-3" role="alert">
-            <ul *ngFor="let msg of message; let i = index">
-              <li>{{ msg }}</li>
-            </ul>
-          </div>
-
-          <button
-            class="btn btn-success btn-sm"
-            [disabled]="!selectedFiles"
-            (click)="transferFiles()"
-          >
-            Transfer
-          </button>
           
-        </div>
-      </div>
-    
-    </div>
-    <div class="col">
-      <div class="card">
-        <div class="card-body">
-          <div class="card-header">List of Available Images From Other Organizations</div>
-            <ul class="list-group list-group-flush" *ngFor="let image of imageRecordDisplay">
-            <li class="list-group-item">
-              <p><a href="{{ image.file }}">{{ image.imageName }}</a></p>
-              <img src="{{ image.file }}" alt="{{ image.imageName }}" height="80px" />
-              <p>TransferredTo: {{image.ownerHosp}}</p>
-              <p>TransferredBy: {{image.transferredBy}}</p>
-            </li>
-            </ul>
-        </div>
       </div>
     </div>
   </div>
 </div>
+
+<div class="container">
+ <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <h5 class="card-title">Local Files</h5>
+        <table class="table">
+          <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">File</th>
+                <th scope="col">Doctor</th>
+                <th scope="col">Patient</th>
+                <th scope="col"></th>
+              </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">4/6/2022</th>
+              <td> imageName.jpg </td>
+              <td>DOC2</td>
+              <td>PID01</td>
+              <td><button class="btn btn-sm" >
+                 Select File
+              </button></td>
+            </tr>
+            <tr>
+              <th scope="row">4/5/2022</th>
+              <td> imageName.jpg </td>
+              <td>DOC1</td>
+              <td>PID02</td>
+              <td><button class="btn btn-sm" >
+                 Select File
+              </button></td>
+            </tr>
+            <tr>
+              <th scope="row">4/5/2022</th>
+              <td> imageName.jpg </td>
+              <td>DOC1</td>
+              <td>PID03</td>
+              <td><button class="btn btn-sm" >
+                 Select File
+              </button></td>
+            </tr>
+          </tbody>
+        </table>
+        <button
+           class="btn btn-success btn-sm"
+           [disabled]="!selectedFiles"
+           (click)="transferFiles()"
+         >
+           Transfer
+         </button>
+</div>
+
+<div class="col-lg-6 col-md-6 col-sm-12">
+  <h5 class="card-title">Files from Other Organizations</h5>
+    <table class="table">
+      <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">File</th>
+            <th scope="col">Organization</th>
+            <th scope="col">Doctor</th>
+            <th scope="col">Patient</th>
+            <th scope="col">Some hash value</th>
+          </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">4/6/2022</th>
+          <td> imageName.jpg </td>
+          <td>HOSP1</td>
+          <td>DOC2</td>
+          <td>PID02</td>
+          <td>83CC4ADF72AF9C648DBCAFC3E6A49A081</td>
+        </tr>
+        <tr>
+          <th scope="row">4/5/2022</th>
+          <td> imageName.jpg </td>
+          <td>HOSP1</td>
+          <td>DOC2</td>
+          <td>PID01</td>
+          <td>83CC4ADF72AF9C648DBCAFC3E6A49A081</td>
+        </tr>
+        <tr>
+          <th scope="row">4/5/2022</th>
+          <td> imageName.jpg </td>
+          <td>HOSP1</td>
+          <td>DOC2</td>
+          <td>PID01</td>
+          <td>83CC4ADF72AF9C648DBCAFC3E6A49A081</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+ </div>
+</div>
+
+<!-- POP-Up -->
+
+<div class="row">
+<div class="col">
+  <div class="card">
+    <div class="card-body">
+
+      <div class="card-title">imageName.jpg</div>
+      <div>
+          <img *ngFor='let preview of previews' [src]="preview" class="preview">
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="col">
+  <div class="card">
+    <div class="card-body">
+
+      <div class="card-title">File Transaction History</div>
+        <table class="table">
+          <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Organization</th>
+                <th scope="col">Doctor</th>
+                <th scope="col">Patient</th>
+                <th scope="col">Some hash value</th>
+              </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">4/6/2022</th>
+              <td>HOSP1</td>
+              <td>DOC2</td>
+              <td>PID02</td>
+              <td>83CC4ADF72AF9C648DBCAFC3E6A49A081</td>
+            </tr>
+            <tr>
+              <th scope="row">4/5/2022</th>
+              <td>HOSP1</td>
+              <td>DOC2</td>
+              <td>PID01</td>
+              <td>83CC4ADF72AF9C648DBCAFC3E6A49A081</td>
+            </tr>
+            <tr>
+              <th scope="row">4/5/2022</th>
+              <td>HOSP1</td>
+              <td>DOC2</td>
+              <td>PID01</td>
+              <td>83CC4ADF72AF9C648DBCAFC3E6A49A081</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+ </div>

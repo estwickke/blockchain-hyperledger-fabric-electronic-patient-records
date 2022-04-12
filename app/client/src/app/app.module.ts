@@ -32,6 +32,8 @@ import { PatientListForDoctorComponent } from './doctor/patient-list-for-doctor/
 import { LoadingPipe } from './loading.pipe';
 
 import {GoogleLoginProvider, SocialLoginModule} from 'angularx-social-login';
+import { PiechartComponent } from './doctor/piechart/piechart.component';
+
 
 const components = [
   AppComponent,
@@ -59,7 +61,7 @@ const pipes = [
 ];
 
 @NgModule({
-  declarations: [...components, ...pipes],
+  declarations: [...components, ...pipes, PiechartComponent],
   imports: [
     BrowserModule,
     FormsModule,
