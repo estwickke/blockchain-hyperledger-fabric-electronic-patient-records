@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { ImageRecord, ImageViewRecord } from '../doctor';
 import { DisplayVal } from '../../patient/patient';
 import { ActivatedRoute, Params } from '@angular/router';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -59,6 +60,12 @@ export class UploadImagesComponent implements OnInit {
   //imageID: string = '';
   public doctorId: any;
 
+  previewsTransfer: string[] = [];
+  imageURL: string = '';
+
+
+  closeResult = '';
+
   previews: string[] = [];
   public imageRecords$?: Observable<Array<ImageViewRecord>>;
 
@@ -79,7 +86,8 @@ export class UploadImagesComponent implements OnInit {
   constructor(private uploadService: FileUploadService,
               private readonly authService: AuthService,
               private readonly doctorService: DoctorService,
-              private readonly fb: FormBuilder,) { 
+              private readonly fb: FormBuilder,
+              private modalService: NgbModal) { 
                 {
                   this.form = this.fb.group({
                     imageName: ['', Validators.required],
@@ -125,7 +133,7 @@ export class UploadImagesComponent implements OnInit {
 
   transferFiles(): void {
     this.message = [];
-
+    console.log(this.selectFiles);
     if (this.selectedFiles) {
       for (let i = 0; i < this.selectedFiles.length; i++) {
         this.transfer(i, this.selectedFiles[i]);
@@ -145,7 +153,9 @@ export class UploadImagesComponent implements OnInit {
             const msg = 'Uploaded the file successfully: ' + file.name;
             this.message.push(msg);
             this.imageInfos = this.uploadService.getFiles();
+            console.log(this.imageInfos);
           }
+          console.log(this.imageInfos);
         },
         error: (err: any) => {
           this.progressInfos[idx].value = 0;
@@ -153,7 +163,9 @@ export class UploadImagesComponent implements OnInit {
           const msg = 'Uploaded the file successfully: '  + file.name;
           this.message.push(msg);
         }});
+
     }
+    console.log(file);
   }
 
   public queryImages(): void{
@@ -375,6 +387,52 @@ export class UploadImagesComponent implements OnInit {
     this.imageInfos = this.uploadService.getFiles();
     this.queryImages();
   }
+
+  open(content: any) {
+    this.modalService.open(content, { size: 'xl' }).result.then((result) => {
+      this.closeResult = 'Closed with: ${result}';
+    }, (reason) => {
+      this.closeResult = 
+         'Dismissed ${this.getDismissReason(reason)}';
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return 'with: ${reason}';
+    }
+  }
+
+  // Edit this so that it takes in the image.url -->
+public getLocalFiles(event: any) {
+  this.imageURL=event.target.value;
+  var imageNameBeforeSplit = this.imageURL;
+  var imageNameAfter = imageNameBeforeSplit.substring(28, imageNameBeforeSplit.length);
+  console.log(imageNameAfter);
+ // http://localhost:3001/files/1649698621763-VCUImageTWO.jfif
+
+  console.log(this.imageURL);
+  (async () => {
+    const response = await fetch(this.imageURL)
+    const imageBlob = await response.blob();
+    var file = new File([imageBlob], imageNameAfter);
+    console.log(file);
+    const reader = new FileReader();
+    reader.readAsDataURL(imageBlob);
+    //this.selectedFiles = file;
+    reader.onloadend = () => {
+      const base64data = reader.result;
+      console.log(base64data);
+    }
+  })()
+  console.log(this.getLocalFiles);
+  
+
+}
 
   
 
