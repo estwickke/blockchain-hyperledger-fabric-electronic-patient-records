@@ -8,6 +8,8 @@ const baseUrl = "http://localhost:3001/files/";
 const uploadFiles = async (req, res) => {
   try {
     console.log(req.file);
+    console.log(req.date + 'THIS IS THE DATE HOPEFULLY');
+    console.log(req.file.date + 'THIS IS THE FILE DATE HOPEFULLYYYY')
 
     if (req.file == undefined) {
       return res.send(`You must select a file.`);
@@ -16,6 +18,7 @@ const uploadFiles = async (req, res) => {
     Image.create({
       type: req.file.mimetype,
       name: req.file.originalname,
+      //date: req.file.date
       data: fs.readFileSync(
         __basedir + "../../resources/static/assets/uploads/" + req.file.filename
       ),
@@ -45,6 +48,10 @@ const getListFiles = (req, res) => {
       });
     }
     let fileInfos = [];
+    
+    console.log(files);
+    
+    console.log(files.lastModified);
     files.forEach((file) => {
       fileInfos.push({
         name: file,

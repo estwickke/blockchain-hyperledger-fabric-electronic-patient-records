@@ -197,6 +197,8 @@ app.delete('/logout', (req, res) => {
   res.sendStatus(204);
 });
 
+
+
 // //////////////////////////////// Admin Routes //////////////////////////////////////
 app.post('/doctors/register', authenticateJWT, adminRoutes.createDoctor);
 app.get('/patients/_all', authenticateJWT, adminRoutes.getAllPatients);
@@ -211,6 +213,7 @@ app.get('/doctors/allTransferredImagesHosp1', authenticateJWT, doctorRoutes.quer
 app.get('/doctors/allTransferredImagesHosp2', authenticateJWT, doctorRoutes.queryAllTransferredImagesHosp2);
 app.get('/doctors/allTransferredImagesHosp3', authenticateJWT, doctorRoutes.queryAllTransferredImagesHosp3);
 
+app.get('/doctors/transactionID', authenticateJWT, doctorRoutes.getRecentTransactionID);
 
 // //////////////////////////////// Patient Routes //////////////////////////////////////
 app.get('/patients/:patientId', authenticateJWT, patientRoutes.getPatientById);

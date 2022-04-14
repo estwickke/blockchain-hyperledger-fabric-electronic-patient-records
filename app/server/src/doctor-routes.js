@@ -98,6 +98,17 @@ exports.transferImage = async (req, res) => {
 
 };
 
+exports.getRecentTransactionID = async (req, res) => {
+  // User role from the request header is validated
+  const userRole = req.headers.role;
+  await validateRole([ROLE_DOCTOR], userRole, res)
+  // Set up and connect to Fabric Gateway
+  const networkObj = await network.connectToNetwork(req.headers.username);
+  // Invoke the smart contract function
+  const response = await network.invoke(networkObj, false, capitalize(userRole) + 'Contract:getRecentTransactionID');
+  (response.error) ? res.status(500).send(response.error) : res.status(200).send(getMessage(false, 'Successfully Updated Patient.'));
+};
+
 exports.queryAllTransferredImagesHosp1= async (req, res) => {
   // User role from the request header is validated
   const userRole = req.headers.role;

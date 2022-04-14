@@ -56,6 +56,11 @@ class PrimaryContract extends Contract {
         return asset;
     }
 
+    async getRecentTransactionID(ctx) {
+        let result = stub.getTxID();
+        return result;
+    }
+
     async patientExists(ctx, patientId) {
         const buffer = await ctx.stub.getState(patientId);
         return (!!buffer && buffer.length > 0);

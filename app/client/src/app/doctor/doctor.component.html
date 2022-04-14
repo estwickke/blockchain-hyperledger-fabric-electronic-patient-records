@@ -1,29 +1,48 @@
-<app-toolbar text="Doctor {{doctorId}}'s Dashboard">
+<app-toolbar >
   <app-toolbar-link text="File Sharing Center" [routerLink]="['upload-images']">
   </app-toolbar-link>
   <app-toolbar-link text="View Patients" icon="users" [routerLink]="['patients']">
   </app-toolbar-link>
-  <app-toolbar-button text="Refresh" icon="refresh" (click)="refresh()"></app-toolbar-button>
 </app-toolbar>
 <br><br><br>
 
 <div class="container">
+  <h1 class="text-center"> {{doctorId}}'s Dashboard </h1>
   <div class="row">
 
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">User Details</h5>
+        <h5 class="card-title text-center">Powered By</h5>
 
-        <div class="card">
-          <div class="card-body">
+        <div >
+          <div>
           <div class="row">
-            <div class="col">
+            
 
-              <img src='data:image/jpeg;base64,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' alt='docimage' display="block">
+              <img src='https://www.nicepng.com/png/full/76-763950_members-hyperledger-logo.png' alt='docimage' display="block" height="250px">
 
-        </div>
         
-        <div class="col">
+        
+        <div *ngIf="doctorRecordObs === undefined">
+          <p>You are not authorized to view doctor details.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+      </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+
+        <h5 class="card-title">User Details</h5>
           <table *ngIf="doctorRecordObs | async as record">
             <span>
               <tr>
@@ -45,25 +64,15 @@
 
             </span>
           </table>
-        </div>
-        
-        <div *ngIf="doctorRecordObs === undefined">
-          <p>You are not authorized to view doctor details.</p>
-        </div>
-
+      
+                
+            </div>
       </div>
-    </div>
-  </div>
-
-      </div>
-    </div>
 </div>
 
-<div class="row">
-  <div class="col">
-    <div class="card">
+<div class="col">
+  <div class="card">
       <div class="card-body">
-
         <h5 class="card-title">Network Information</h5>
                 <!-- <table ngIf="doctorRecordObs | async as record"> -->
                 <table>
@@ -75,44 +84,23 @@
                       <td class="labels"><strong>Current Organization: HOSP1</strong></td>
                     </tr>
                     <tr>
-                      <td class="labels"><strong>Current User: DOC1</strong></td>
+                      <td class="labels"><strong>Current User: {{doctorId}} </strong></td>
                     </tr>
 
                   </span>
                 </table>
-                
-            </div>
-      </div>
-</div>
-
-<div class="col">
-  <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">File Access</h5>
-              <!-- <table ngIf="doctorRecordObs | async as record"> -->
-              <table>
-                <span>
-                  <tr>
-                    <td class="labels"><strong>Files Stored Locally: 3</strong></td>
-                  </tr>
-                  <tr>
-                    <td class="labels"><strong>Access to files at other organizations: 4</strong></td>
-                  </tr>
-                  <tr>
-                    <td class="labels"><strong>Current User: DOC1</strong></td>
-                  </tr>
-
-                </span>
-              </table>
 
               </div>
             </div>
         </div>
 </div>
+<br>
+<br>
+<br>
   <div class="row">
   <div class="card">
       <div class="card-body">
-  <div class="card-header">Transactions for HOSP1</div>
+  <div class="card-title">Transactions for HOSP1</div>
   
       <table class="table">
         <thead>

@@ -14,6 +14,7 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 
 
+
 class image {
   imageID!: string;
   imageName!: string;
@@ -42,6 +43,7 @@ export class UploadImagesComponent implements OnInit {
   });
 
   public form: FormGroup;
+  public popUpForm: FormGroup;
   public imageName: any;
   public imageRecord: Array<ImageViewRecord> = [];
   public imageRecordDisplay: Array<ImageRecord> = [];
@@ -52,6 +54,9 @@ export class UploadImagesComponent implements OnInit {
   progressInfos: any[] = [];
   message: string[] = [];
   public imageString: any;
+  public imageBlobString: any;
+  public imageRecordDisplayTemp: Array<ImageRecord> = [];
+  currentDate = new Date();
 
   stringImage: any;
   objectImage: any;
@@ -61,7 +66,10 @@ export class UploadImagesComponent implements OnInit {
   public doctorId: any;
 
   previewsTransfer: string[] = [];
-  imageURL: string = '';
+  public imageURL: string = '';
+  public imageBlob?: Blob;
+  public doctorIdTwo: any;
+
 
 
   closeResult = '';
@@ -87,6 +95,7 @@ export class UploadImagesComponent implements OnInit {
               private readonly authService: AuthService,
               private readonly doctorService: DoctorService,
               private readonly fb: FormBuilder,
+              private readonly route: ActivatedRoute,
               private modalService: NgbModal) { 
                 {
                   this.form = this.fb.group({
@@ -131,19 +140,9 @@ export class UploadImagesComponent implements OnInit {
     }
   }
 
-  transferFiles(): void {
-    this.message = [];
-    console.log(this.selectFiles);
-    if (this.selectedFiles) {
-      for (let i = 0; i < this.selectedFiles.length; i++) {
-        this.transfer(i, this.selectedFiles[i]);
-      }
-    }
-  }
-
   upload(idx: number, file: File): void {
     this.progressInfos[idx] = { value: 0, fileName: file.name };
-    
+    this.currentDate = new Date(file.lastModified);
     if (file) {
       this.uploadService.upload(file).subscribe({
         next: (event: any) => {
@@ -156,6 +155,9 @@ export class UploadImagesComponent implements OnInit {
             console.log(this.imageInfos);
           }
           console.log(this.imageInfos);
+          //this.currentDate = new Date(file.lastModified);
+          console.log(this.currentDate);
+
         },
         error: (err: any) => {
           this.progressInfos[idx].value = 0;
@@ -175,7 +177,7 @@ export class UploadImagesComponent implements OnInit {
       transferredBy: [transferredBy, Validators.required],
     });
     
-    console.log(this.ownerHosp + '236363636636');
+    //console.log(this.ownerHosp + '236363636636');
     //console.log(this.imageID + '237373737');
     formData.append('transferredBy', transferredBy);
     var imageName = '';
@@ -337,8 +339,8 @@ export class UploadImagesComponent implements OnInit {
       console.log(this.ownerHosp);
      }
 
-  transfer(idx: number, file: File): void {
-    this.progressInfos[idx] = { value: 0, fileName: file.name };
+  transfer(file: File, imageBlob: any): void {
+    
     console.log(file);
     //const files = file;
     const formData: FormData = new FormData();
@@ -354,27 +356,29 @@ export class UploadImagesComponent implements OnInit {
     //const imageIDName = this.imageID;
     const reader = new FileReader();
     
-
+    //this.imageBlobString = imageBlob.toString();
+    console.log(imageBlob);
 
     this.form = this.fb.group({
       imageName: [file.name, Validators.required],
       ownerHosp: [hospitalId, Validators.required], //target hospital (transfer to)
-      file: [this.imageString, Validators.required],
+      file: [imageBlob, Validators.required],
       transferredBy: [transferredBy, Validators.required],
     });
     
     console.log(this.ownerHosp + '236363636636');
     //console.log(this.imageID + '237373737');
 
-    formData.append('file', this.imageString);
+    formData.append('file', imageBlob);
     formData.append('imageName', file.name);
     formData.append('ownerHosp', hospitalId);
     formData.append('transferredBy', transferredBy);
     
-    //console.log(formData.get('file'));
-    //console.log(formData.get('imageName'));
-    //console.log(formData.get('ownerHosp'));
-    //console.log(formData.get('transferredBy'));
+    
+    console.log(formData.get('file'));
+    console.log(formData.get('imageName'));
+    console.log(formData.get('ownerHosp'));
+    console.log(formData.get('transferredBy'));
     //console.log(file.name);
     //console.log(hospitalId);
     this.allSub.add(
@@ -386,18 +390,34 @@ export class UploadImagesComponent implements OnInit {
   ngOnInit(): void {
     this.imageInfos = this.uploadService.getFiles();
     this.queryImages();
+    
+    this.sub = this.route.params
+      .subscribe((params: Params) => {
+        this.doctorId = params.doctorId;
+      });
   }
 
-  open(content: any) {
+  open(content: any, image: any) {
+    this.imageRecordDisplayTemp = [];
+    console.log(image);
+    this.imageRecordDisplayTemp.push(image);
+    console.log(this.imageRecordDisplayTemp);
+
     this.modalService.open(content, { size: 'xl' }).result.then((result) => {
       this.closeResult = 'Closed with: ${result}';
     }, (reason) => {
       this.closeResult = 
          'Dismissed ${this.getDismissReason(reason)}';
     });
+
+    
+   
+
+  
   }
 
   private getDismissReason(reason: any): string {
+    
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
@@ -407,34 +427,32 @@ export class UploadImagesComponent implements OnInit {
     }
   }
 
-  // Edit this so that it takes in the image.url -->
+ //update with call to transfer and change of paramters**
 public getLocalFiles(event: any) {
-  this.imageURL=event.target.value;
+  this.imageURL = event.target.value;
   var imageNameBeforeSplit = this.imageURL;
+  console.log(this.imageURL);
   var imageNameAfter = imageNameBeforeSplit.substring(28, imageNameBeforeSplit.length);
   console.log(imageNameAfter);
  // http://localhost:3001/files/1649698621763-VCUImageTWO.jfif
 
   console.log(this.imageURL);
   (async () => {
-    const response = await fetch(this.imageURL)
+    const response = await fetch(this.imageURL);
     const imageBlob = await response.blob();
     var file = new File([imageBlob], imageNameAfter);
-    console.log(file);
+    //this.transfer(file); //call to function IMPORTANT
     const reader = new FileReader();
     reader.readAsDataURL(imageBlob);
     //this.selectedFiles = file;
     reader.onloadend = () => {
       const base64data = reader.result;
-      console.log(base64data);
+      console.log(base64data); //whole blob
+      //this.transfer(base64data);
+      this.transfer(file, base64data);
     }
   })()
   console.log(this.getLocalFiles);
-  
-
 }
-
-  
-
 }
 

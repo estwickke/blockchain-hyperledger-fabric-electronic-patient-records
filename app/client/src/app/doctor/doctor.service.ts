@@ -53,6 +53,11 @@ export class DoctorService {
     return this.http.get(this.doctorURL + '/allTransferredImagesHosp3');
   }
 
+  public getRecentTransactionID(): Observable<any> {
+    
+    return this.http.get(this.doctorURL + '/transactionID');
+  }
+
   
 
   

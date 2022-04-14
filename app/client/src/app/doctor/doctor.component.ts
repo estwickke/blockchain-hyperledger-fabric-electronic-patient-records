@@ -32,6 +32,8 @@ export class DoctorComponent implements OnInit, OnDestroy {
 
 //  ];
 
+public transactionID: any;
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly doctorService: DoctorService,
@@ -55,6 +57,9 @@ export class DoctorComponent implements OnInit, OnDestroy {
 
   public refresh(): void {
     this.doctorRecordObs = this.doctorService.getDoctorByHospitalId(this.authService.getHospitalId(), this.doctorId);
+    this.transactionID = this.doctorService.getRecentTransactionID();
+    console.log(this.transactionID);
+    //console.log(this.transactionID);
     //this.all_images = this.doctorService.fetchAllTransferredImages(); 
 
   }
