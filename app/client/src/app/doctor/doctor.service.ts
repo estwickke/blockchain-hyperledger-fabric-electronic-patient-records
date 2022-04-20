@@ -53,9 +53,33 @@ export class DoctorService {
     return this.http.get(this.doctorURL + '/allTransferredImagesHosp3');
   }
 
-  public getRecentTransactionID(): Observable<any> {
+  public transactionRecord(): Object {
+    class transactionRecord {
+      date: any;
+      time: any;
+      hash: any;
+
+      constructor(date,time,hash) {
+        this.date = date;
+        this.time = time
+        this.hash = hash
+      }
     
-    return this.http.get(this.doctorURL + '/transactionID');
+      record() {
+        console.log({date},{time},{hash}) + '6969696969696';
+      }
+    
+    }
+    const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    var date = new Date();
+    var dateMonth = months[date.getMonth()] + ' ' +date.getDate();
+    var time = date.getHours() +":"+date.getMinutes();
+    var hash = "asdfeadfadf";
+    const transaction = new transactionRecord(dateMonth,time,hash);
+    
+    transaction.record();
+    console.log(transaction + '8188181881881881');
+    return transaction;
   }
 
   

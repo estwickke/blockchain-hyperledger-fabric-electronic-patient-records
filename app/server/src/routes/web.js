@@ -1,17 +1,31 @@
 const express = require("express");
 const router = express.Router();
 //const homeController = require("../controllers/home");
-const uploadController = require("../controllers/upload");
-const upload = require("../middleware/upload");
+const uploadControllerOne = require("../controllers/uploadOne");
+const uploadOne = require("../middleware/uploadOne");
+
+const uploadControllerTwo = require("../controllers/uploadTwo");
+const uploadTwo = require("../middleware/uploadTwo");
+
+const uploadControllerThree = require("../controllers/uploadThree");
+const uploadThree = require("../middleware/uploadThree");
 
 let routes = (app) => {
   //router.get("/", homeController.getHome);
 
-  router.post("/upload", upload.single("file"), uploadController.uploadFiles);
+  router.post("/uploadHosp1", uploadOne.single("file"), uploadControllerOne.uploadFiles);
 
-  router.get("/files", uploadController.getListFiles);
+  router.post("/uploadHosp2", uploadTwo.single("file"), uploadControllerTwo.uploadFiles);
 
-  router.get("/files/:name", uploadController.download);
+  router.post("/uploadHosp3", uploadThree.single("file"), uploadControllerThree.uploadFiles);
+
+  router.get("/filesHosp1", uploadControllerOne.getListFiles);
+  
+  router.get("/filesHosp2", uploadControllerTwo.getListFiles);
+
+  router.get("/filesHosp3", uploadControllerThree.getListFiles);
+
+  //router.get("/files/:name", uploadController.download);
 
   return app.use("/", router);
 };

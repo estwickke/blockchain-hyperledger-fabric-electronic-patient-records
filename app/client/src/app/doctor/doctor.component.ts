@@ -6,7 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { RoleEnum } from '../utils';
 import { AuthService } from '../core/auth/auth.service';
 
-import { DoctorViewRecord } from './doctor';
+import { DoctorViewRecord, transactionRecord } from './doctor';
 import { DoctorService } from './doctor.service';
 
 import { Chart } from 'node_modules/chart.js';
@@ -20,8 +20,12 @@ import { Chart } from 'node_modules/chart.js';
 })
 export class DoctorComponent implements OnInit, OnDestroy {
   public doctorId: any;
+  public hospitalId: any;
   public doctorRecordObs?: Observable<DoctorViewRecord>;
   private sub?: Subscription;
+  public isVCU: boolean;
+  public parsedhospID: any;
+  public transactionRecordDisplay: Array<transactionRecord> = [];
   //public all_images$?: Observable<Array<transferredImages>>;
 
 //  public headerNames = [
@@ -34,6 +38,7 @@ export class DoctorComponent implements OnInit, OnDestroy {
 
 public transactionID: any;
 
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly doctorService: DoctorService,
@@ -45,10 +50,10 @@ public transactionID: any;
     this.sub = this.route.params
       .subscribe((params: Params) => {
         this.doctorId = params.doctorId;
+        this.hospitalId = params.hospitalId;
         this.refresh();
+        this.isVCUMethod();
       });
-
-      
   }
 
   ngOnDestroy(): void {
@@ -57,15 +62,33 @@ public transactionID: any;
 
   public refresh(): void {
     this.doctorRecordObs = this.doctorService.getDoctorByHospitalId(this.authService.getHospitalId(), this.doctorId);
-    this.transactionID = this.doctorService.getRecentTransactionID();
+    this.transactionID = this.doctorService.transactionRecord();
     console.log(this.transactionID);
     //console.log(this.transactionID);
     //this.all_images = this.doctorService.fetchAllTransferredImages(); 
+    this.transactionRecordDisplay.push(this.transactionID);
+    console.log(this.transactionRecordDisplay[0]);
+    console.log(this.transactionRecordDisplay[1]);
 
+  }
+
+  public isVCUMethod(): void {
+    console.log(this.doctorId);
+    var doctorID = this.doctorId;
+    this.parsedhospID = doctorID.substring(0,5);
+    console.log(this.parsedhospID);
+    if(this.parsedhospID == "HOSP1"){
+      //console.log(this.hospitalId);
+      this.isVCU = true;
+    }
+    else{
+      this.isVCU = false;
+    }
   }
 
   public isDoctor(): boolean {
     return this.authService.getRole() === RoleEnum.DOCTOR;
   }
+
 
 }

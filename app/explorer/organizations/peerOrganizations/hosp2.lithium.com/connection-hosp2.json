@@ -1,0 +1,49 @@
+{
+    "name": "hospital-network-hosp2",
+    "version": "1.0.0",
+    "client": {
+        "organization": "hosp2",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "hosp2": {
+            "mspid": "hosp2MSP",
+            "peers": [
+                "peer0.hosp2.lithium.com"
+            ],
+            "certificateAuthorities": [
+                "ca.hosp2.lithium.com"
+            ]
+        }
+    },
+    "peers": {
+        "peer0.hosp2.lithium.com": {
+            "url": "grpcs://localhost:9051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICIzCCAcmgAwIBAgIUTQkux0soNEGK9MRP/IEghi04LzkwCgYIKoZIzj0EAwIw\nbjELMAkGA1UEBhMCVUsxEjAQBgNVBAgTCUhhbXBzaGlyZTEQMA4GA1UEBxMHSHVy\nc2xleTEaMBgGA1UEChMRaG9zcDIubGl0aGl1bS5jb20xHTAbBgNVBAMTFGNhLmhv\nc3AyLmxpdGhpdW0uY29tMB4XDTIyMDQxNDAwMTIwMFoXDTM3MDQxMDAwMTIwMFow\nbjELMAkGA1UEBhMCVUsxEjAQBgNVBAgTCUhhbXBzaGlyZTEQMA4GA1UEBxMHSHVy\nc2xleTEaMBgGA1UEChMRaG9zcDIubGl0aGl1bS5jb20xHTAbBgNVBAMTFGNhLmhv\nc3AyLmxpdGhpdW0uY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEbi+Dapf2\nEnlc1vRk4kB0nNd70z0kWO+8YQNxFFiHRuzca6xEPL/wzry7jdz+jNjdo180lmwc\nyctam3VASJC+bKNFMEMwDgYDVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8C\nAQEwHQYDVR0OBBYEFL08JkpnowaaettKOajgwA8RDucyMAoGCCqGSM49BAMCA0gA\nMEUCIQDWRb3/R/xgKVPGkHmWjVMG+izVInDMT7rh4E4lFD8ZjAIgbIQuHNQmXtdq\nUd6nKZP+4MkVPoyJw2fFRIghqOM6EEw=\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.hosp2.lithium.com",
+                "hostnameOverride": "peer0.hosp2.lithium.com"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.hosp2.lithium.com": {
+            "url": "https://localhost:8054",
+            "caName": "ca-hosp2",
+            "tlsCACerts": {
+                "pem": ["-----BEGIN CERTIFICATE-----\nMIICIzCCAcmgAwIBAgIUTQkux0soNEGK9MRP/IEghi04LzkwCgYIKoZIzj0EAwIw\nbjELMAkGA1UEBhMCVUsxEjAQBgNVBAgTCUhhbXBzaGlyZTEQMA4GA1UEBxMHSHVy\nc2xleTEaMBgGA1UEChMRaG9zcDIubGl0aGl1bS5jb20xHTAbBgNVBAMTFGNhLmhv\nc3AyLmxpdGhpdW0uY29tMB4XDTIyMDQxNDAwMTIwMFoXDTM3MDQxMDAwMTIwMFow\nbjELMAkGA1UEBhMCVUsxEjAQBgNVBAgTCUhhbXBzaGlyZTEQMA4GA1UEBxMHSHVy\nc2xleTEaMBgGA1UEChMRaG9zcDIubGl0aGl1bS5jb20xHTAbBgNVBAMTFGNhLmhv\nc3AyLmxpdGhpdW0uY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEbi+Dapf2\nEnlc1vRk4kB0nNd70z0kWO+8YQNxFFiHRuzca6xEPL/wzry7jdz+jNjdo180lmwc\nyctam3VASJC+bKNFMEMwDgYDVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8C\nAQEwHQYDVR0OBBYEFL08JkpnowaaettKOajgwA8RDucyMAoGCCqGSM49BAMCA0gA\nMEUCIQDWRb3/R/xgKVPGkHmWjVMG+izVInDMT7rh4E4lFD8ZjAIgbIQuHNQmXtdq\nUd6nKZP+4MkVPoyJw2fFRIghqOM6EEw=\n-----END CERTIFICATE-----\n"]
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

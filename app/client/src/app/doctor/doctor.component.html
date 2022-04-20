@@ -10,130 +10,163 @@
   <h1 class="text-center"> {{doctorId}}'s Dashboard </h1>
   <div class="row">
 
-    <div class="card">
+        <h5 class="text-center">Powered By</h5>
+
+            <div class="col offset-md-1" height="75px" width="75px" >
+              <img src='https://www.nicepng.com/png/full/76-763950_members-hyperledger-logo.png' alt='docimage' display="block">
+            </div>
+
+</div>
+</div>
+<br>
+<br>
+<br>
+<div class="container">
+<div class="row align-items-center">
+  <div class="col mx-auto">
+  <div class="card bg-dark text-white text-center justify-content-center">
       <div class="card-body">
-        <h5 class="card-title text-center">Powered By</h5>
+        <h3 class="card-title">User Details</h3>
+                <div *ngIf="doctorRecordObs | async as record"> 
+                
+                  
+                    
+                      <p ><strong>Doctor ID: {{doctorId}}</strong></p>
+                    
+                 
+                      <p ><strong>Name: {{record.firstName}} {{record.lastName}}</strong></p>
+                    
+                      <p ><strong>Speciality: {{record.speciality}}</strong></p>
+                    
 
-        <div >
-          <div>
-          <div class="row">
-            
+                  
+                </div>
 
-              <img src='https://www.nicepng.com/png/full/76-763950_members-hyperledger-logo.png' alt='docimage' display="block" height="250px">
+              </div>
+            </div>
+        </div> 
 
+
+<div class="col"  >
+  
         
-        
-        <div *ngIf="doctorRecordObs === undefined">
-          <p>You are not authorized to view doctor details.</p>
-        </div>
-
-      </div>
-    </div>
+          <div *ngIf="isVCU==true" class="mx-auto">
+            <img src='https://media.glassdoor.com/sqll/120857/vcu-medical-center-squarelogo.png' class="mx-auto d-block" width='250px'/> 
+          </div>
+          
+          <div *ngIf="isVCU==false" class="mx-auto">
+             <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Mayo_Clinic_logo.svg/1200px-Mayo_Clinic_logo.svg.png' class="mx-auto d-block" width='250px'/>
+          </div>
+          
   </div>
 
-      </div>
-    </div>
-</div>
-<br>
-<br>
-<br>
-<div class="row">
-  <div class="col">
-    <div class="card">
-      <div class="card-body">
-
-        <h5 class="card-title">User Details</h5>
-          <table *ngIf="doctorRecordObs | async as record">
-            <span>
-              <tr>
-                <td class="labels"><strong>Doctor ID</strong></td>
-                <td>{{doctorId}}</td>
-              </tr>
-              <tr>
-                <td class="labels"><strong>First Name</strong></td>
-                <td>{{record.firstName}}</td>
-              </tr>
-              <tr>
-                <td class="labels"><strong>Last Name</strong></td>
-                <td>{{record.lastName}}</td>
-              </tr>
-              <tr>
-                <td class="labels"><strong>Speciality</strong></td>
-                <td>{{record.speciality}}</td>
-              </tr>
-
-            </span>
-          </table>
-      
-                
-            </div>
-      </div>
-</div>
-
 <div class="col">
-  <div class="card">
+  <div class="card bg-dark text-white text-center">
       <div class="card-body">
-        <h5 class="card-title">Network Information</h5>
-                <!-- <table ngIf="doctorRecordObs | async as record"> -->
-                <table>
-                  <span>
-                    <tr>
-                      <td class="labels"><strong>Number of Organizations on this network: 3</strong></td>
-                    </tr>
-                    <tr>
-                      <td class="labels"><strong>Current Organization: HOSP1</strong></td>
-                    </tr>
-                    <tr>
-                      <td class="labels"><strong>Current User: {{doctorId}} </strong></td>
-                    </tr>
+        <h3 class="card-title">Network Information</h3>
+        <div> 
+                
+                  
+                    
+          <p ><strong>Number of Peer Organizations: 3</strong></p>
+        
+     
+          <p ><strong>Current Organization: {{parsedhospID}}</strong></p>
+        
+          <p ><strong>Current User: {{doctorId}}</strong></p>
+        
 
-                  </span>
-                </table>
+      
+      </div>
 
               </div>
             </div>
         </div>
 </div>
+</div>
 <br>
 <br>
-<br>
-  <div class="row">
-  <div class="card">
-      <div class="card-body">
-  <div class="card-title">Transactions for HOSP1</div>
-  
-      <table class="table">
-        <thead>
-            <tr>
-              <th scope="col">Date</th>
-              <th scope="col">Doctor</th>
-              <th scope="col">Patient</th>
-              <th scope="col">Some hash value</th>
-            </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">4/6/2022</th>
-            <td>DOC2</td>
-            <td>PID02</td>
-            <td>83CC4ADF72AF9C648DBCAFC3E6A49A081</td>
-          </tr>
-          <tr>
-            <th scope="row">4/5/2022</th>
-            <td>DOC2</td>
-            <td>PID01</td>
-            <td>83CC4ADF72AF9C648DBCAFC3E6A49A081</td>
-          </tr>
-          <tr>
-            <th scope="row">4/5/2022</th>
-            <td>DOC2</td>
-            <td>PID01</td>
-            <td>83CC4ADF72AF9C648DBCAFC3E6A49A081</td>
-          </tr>
-        </tbody>
-      </table>
-      
-      </div>
+
+<div class="container">
+    <div *ngIf="isVCU==true" class="row">
+      <h1>Recent Transactions</h1>
+           <table class="table table-striped">
+
+             <thead class="thead-dark"> 
+                 <tr>
+                   <th scope="col">Date</th>
+                   <th scope="col">Time</th>
+                   <th scope="col">Hash</th>
+
+                 </tr>
+             </thead>
+             <tbody>
+               <tr>
+                 <th scope="row">04/14/22</th>
+                 <td>20:12</td>
+                 <td>25fc0e7096fc653718202dc30b0c580b8ab87eac11a700cba03a7c021bc35b0c</td>
+               </tr>
+               <tr>
+                 <th scope="row">04/14/22</th>
+                 <td>19:07</td>
+                 <td>4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a</td>
+               </tr>
+               <tr>
+                 <th scope="row">04/14/22</th>
+                 <td>17:05</td>
+                 <td>3538a1ef2e113da64249eea7bd068b585ec7ce5df73b2d1e319d8c9bf47eb314</td>
+               </tr>
+               <tr>
+                 <th scope="row">04/14/22</th>
+                 <td>14:03</td>
+                 <td>71ee45a3c0db9a9865f7313dd3372cf60dca6479d46261f3542eb9346e4a04d6</td>
+               </tr>
+             </tbody>
+           </table>
     </div>
-  </div>
+    
+    <div *ngIf="isVCU==false" class="row">
+      <h1>Recent Transactions</h1>
+           <table class="table table-striped">
+
+             <thead class="thead-dark"> 
+                 <tr>
+                   <th scope="col">Date</th>
+                   <th scope="col">Time</th>
+                   <th scope="col">Hash</th>
+
+                 </tr>
+             </thead>
+             <tbody>
+               <tr>
+                 <th scope="row">04/15/22</th>
+                 <td>3:26</td>
+                 <td>e11d8cb94b54e0a2fd0e780f93dd51837fd39bf0c9b86f21e760d02a8550ddf7</td>
+               </tr>
+               <tr>
+                 <th scope="row">04/14/22</th>
+                 <td>20:12</td>
+                 <td>25fc0e7096fc653718202dc30b0c580b8ab87eac11a700cba03a7c021bc35b0c</td>
+               </tr>
+               <tr>
+                 <th scope="row">04/14/22</th>
+                 <td>19:07</td>
+                 <td>4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a</td>
+               </tr>
+               <tr>
+                 <th scope="row">04/14/22</th>
+                 <td>17:05</td>
+                 <td>3538a1ef2e113da64249eea7bd068b585ec7ce5df73b2d1e319d8c9bf47eb314</td>
+               </tr>
+               <tr>
+                 <th scope="row">04/14/22</th>
+                 <td>14:03</td>
+                 <td>71ee45a3c0db9a9865f7313dd3372cf60dca6479d46261f3542eb9346e4a04d6</td>
+               </tr>
+             </tbody>
+           </table>
+    </div>
+
+      
+ 
 </div>

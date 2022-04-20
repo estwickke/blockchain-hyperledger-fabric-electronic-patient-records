@@ -29,6 +29,13 @@ export interface ImageRecord{
   ownerHosp: string;
 }
 
+export interface transactionRecord{
+  date: string;
+  time: string;
+  hash: string;
+}
+
+
 export class ImageViewRecord{
   imageName= '';
   file= '';

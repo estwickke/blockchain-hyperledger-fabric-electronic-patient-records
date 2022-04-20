@@ -197,7 +197,27 @@ app.delete('/logout', (req, res) => {
   res.sendStatus(204);
 });
 
-
+app.get('/transactionRecord', (req, res) => {
+  class transactionRecord {
+  
+    constructor(date,time,hash) {
+      this.date = date;
+      this.time = time
+      this.hash = hash
+    }
+  
+  
+  }
+  const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  var date = new Date();
+  var dateMonth = months[date.getMonth()] + ' ' +date.getDate();
+  var time = date.getHours() +":"+date.getMinutes();
+  var hash = "asdfeadfadf";
+  const transaction = new transactionRecord(dateMonth,time,hash);
+  console.log(transaction+'21717171771717');
+    res.send(transaction)
+  })
+  
 
 // //////////////////////////////// Admin Routes //////////////////////////////////////
 app.post('/doctors/register', authenticateJWT, adminRoutes.createDoctor);

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FileUploadService } from './file-upload.service';
@@ -6,10 +6,14 @@ import { DoctorService } from '../doctor.service';
 import { AuthService } from '../../core/auth/auth.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ImageRecord, ImageViewRecord } from '../doctor';
+import { ImageRecord, ImageViewRecord} from '../doctor';
+
 import { DisplayVal } from '../../patient/patient';
 import { ActivatedRoute, Params } from '@angular/router';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
+import {NgbAlert} from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -42,6 +46,8 @@ export class UploadImagesComponent implements OnInit {
     ownerHosp : new FormControl(),
   });
 
+  public isVCU: boolean;
+  public parsedhospID: any;
   public form: FormGroup;
   public popUpForm: FormGroup;
   public imageName: any;
@@ -53,10 +59,16 @@ export class UploadImagesComponent implements OnInit {
   selectedFiles?: FileList;
   progressInfos: any[] = [];
   message: string[] = [];
+  messageTransfer: string[] = [];
   public imageString: any;
   public imageBlobString: any;
   public imageRecordDisplayTemp: Array<ImageRecord> = [];
   currentDate = new Date();
+  private _success = new Subject<string>();
+
+  staticAlertClosed = false;
+  successMessage = '';
+  @ViewChild('selfClosingAlert', {static: false}) selfClosingAlert: NgbAlert;
 
   stringImage: any;
   objectImage: any;
@@ -143,15 +155,17 @@ export class UploadImagesComponent implements OnInit {
   upload(idx: number, file: File): void {
     this.progressInfos[idx] = { value: 0, fileName: file.name };
     this.currentDate = new Date(file.lastModified);
+    const transferredBy = 'hosp' + this.authService.getHospitalId();  //who is transferring
+    console.log(transferredBy + '15959595995');
     if (file) {
-      this.uploadService.upload(file).subscribe({
+      this.uploadService.upload(file, transferredBy).subscribe({
         next: (event: any) => {
           if (event.type === HttpEventType.UploadProgress) {
             this.progressInfos[idx].value = Math.round(100 * event.loaded / event.total);
           } else if (event instanceof HttpResponse) {
             const msg = 'Uploaded the file successfully: ' + file.name;
             this.message.push(msg);
-            this.imageInfos = this.uploadService.getFiles();
+            this.imageInfos = this.uploadService.getFiles(transferredBy);
             console.log(this.imageInfos);
           }
           console.log(this.imageInfos);
@@ -340,7 +354,7 @@ export class UploadImagesComponent implements OnInit {
      }
 
   transfer(file: File, imageBlob: any): void {
-    
+   
     console.log(file);
     //const files = file;
     const formData: FormData = new FormData();
@@ -384,16 +398,42 @@ export class UploadImagesComponent implements OnInit {
     this.allSub.add(
       this.doctorService.transfer(this.form.value).subscribe(x => this.transferImageData = x)
     );
-    
+
+    this.messageTransfer = [];
+    const msg = 'Transferred successfully.';
+    this.messageTransfer.push(msg);
+
+  }
+  public isVCUMethod(): void {
+    console.log(this.doctorId);
+    var doctorID = this.doctorId;
+    this.parsedhospID = doctorID.substring(0,5);
+    console.log(this.parsedhospID);
+    if(this.parsedhospID == "HOSP1"){
+      //console.log(this.hospitalId);
+      this.isVCU = true;
+    }
+    else{
+      this.isVCU = false;
+    }
   }
 
   ngOnInit(): void {
-    this.imageInfos = this.uploadService.getFiles();
+    const transferredBy = 'hosp' + this.authService.getHospitalId();  //who is transferring
+    this.imageInfos = this.uploadService.getFiles(transferredBy);
     this.queryImages();
     
+    this._success.subscribe(message => this.successMessage = message);
+    this._success.pipe(debounceTime(5000)).subscribe(() => {
+      if (this.selfClosingAlert) {
+        this.selfClosingAlert.close();
+      }
+    });
+
     this.sub = this.route.params
       .subscribe((params: Params) => {
         this.doctorId = params.doctorId;
+        this.isVCUMethod();
       });
   }
 
@@ -404,6 +444,22 @@ export class UploadImagesComponent implements OnInit {
     console.log(this.imageRecordDisplayTemp);
 
     this.modalService.open(content, { size: 'xl' }).result.then((result) => {
+      this.closeResult = 'Closed with: ${result}';
+    }, (reason) => {
+      this.closeResult = 
+         'Dismissed ${this.getDismissReason(reason)}';
+    });
+
+    
+   
+
+  
+  }
+
+  openTwo(contentTwo: any) {
+
+
+    this.modalService.open(contentTwo, { size: 'xl' }).result.then((result) => {
       this.closeResult = 'Closed with: ${result}';
     }, (reason) => {
       this.closeResult = 
@@ -428,10 +484,13 @@ export class UploadImagesComponent implements OnInit {
   }
 
  //update with call to transfer and change of paramters**
-public getLocalFiles(event: any) {
-  this.imageURL = event.target.value;
+public getLocalFiles(image: any) {
+  console.log(image);
+  this.messageTransfer = [];
+  this.imageURL = image.url;
   var imageNameBeforeSplit = this.imageURL;
   console.log(this.imageURL);
+  
   var imageNameAfter = imageNameBeforeSplit.substring(28, imageNameBeforeSplit.length);
   console.log(imageNameAfter);
  // http://localhost:3001/files/1649698621763-VCUImageTWO.jfif

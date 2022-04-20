@@ -1,139 +1,156 @@
-<app-toolbar>
-  <app-toolbar-button text="Refresh" icon="refresh" (click)="queryImages()"></app-toolbar-button>
-</app-toolbar>
-<br><br><br>
+<br>
+<br>
 
 <div class="container">
 
 <h1 class="text-center">File Sharing Center</h1>
 
-  <div class="row">
-      <div class="card">
-        <div class="card-body text-center">
-          
-          <h5 class="card-title">Upload File</h5>
-
-           <label class="btn btn-default p-0">
-             <input type="file" accept="image/*" multiple (change)="selectFiles($event)" />
-           </label>
-
-            <div>
-             <img *ngFor='let preview of previews' [src]="preview" class="preview">
-           </div>
-
-           <div *ngIf="message.length" class="alert alert-secondary my-3" role="alert">
-             <ul *ngFor="let msg of message; let i = index">
-               <li>{{ msg }}</li>
-             </ul>
-           </div>
-
-           <button
-              class="btn btn-success btn-sm"
-              [disabled]="!selectedFiles"
-              (click)="uploadFiles()">
-              Upload
-           </button>
-          
-      </div>
-    </div>
-  </div>
 </div>
 <br>
 <br>
-<br>
+
+
+<div *ngIf="messageTransfer.length" class="alert alert-success alert-dismissable my-3" role="alert">
+  <ul>
+    <li>{{ messageTransfer }}</li>
+  </ul>
+</div>
 
 <div class="container">
- <div class="row table-responsive border border-dark">
+ <div class="row table-responsive">
     
-      <h5 class="card-title text-center">Local Files</h5>
+      <h2 class="text-center">Local Files</h2>
+      <br>
      <!-- This is upload html new table for local files -->
-  <table class="table">
-    <thead>
-        <tr>
-          <th scope="col">Image ID</th>
-          <th scope="col">File</th>
-          <th scope="col">Doctor</th>
-          <th scope="col">Patient</th>
-          <th scope="col">Preview</th>
-          <th scope="col"></th>
-          <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody *ngFor="let image of imageInfos | async; let i=index">
-      <tr>
-        <th scope="row">{{i+1}}</th>
-        <td>{{ image.name }}</td>
-        <td>{{doctorId}}</td>
-        <td>PID01</td>
-        <td>
-          <div>
-                <img  src="{{image.url}}"
-                alt="{{image.name}}" display="block" width="50px" />
-          </div>
-        </td>
-        <td><article>
-         <label for="hospital">Transfer To: </label>
-           <select (change)="getOwnerHosp($event)">
-             <option value="none" selected disabled hidden>Select an Option</option>
-             <option value="hosp1">Hospital 1</option>
-             <option value="hosp2">Hospital 2</option>
-             <option value="hosp3">Hospital 3</option>
-           </select>
-         </article></td>
-         <td><label for="transfer" class="btn btn-outline-primary"> Send
-          <input type="radio" accept="image/*" value="{{image.url}}" (change)="getLocalFiles($event)" id="transfer" style="display:none"/>
-        </label></td>
-      </tr>
-    </tbody>
-  </table>
+     
+      <table class="table table-hover table-bordered table-rounded">
+        <thead class="thead-dark">
+            <tr>
+              <th scope="col">Image ID</th>
+              <th scope="col">File</th>
+              <th scope="col">Doctor</th>
+          
+              <th scope="col">Preview</th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let image of imageInfos | async; let i=index">
+          <tr>
+            <th scope="row">{{i+1}}</th>
+            <td><strong>{{ image.name }}</strong></td>
+            <td>{{doctorId}}</td>
+         
+            <td>
+              <div>
+                    <img  src="{{image.url}}"
+                    alt="{{image.name}}" display="block" width="50px" />
+              </div>
+            </td>
+            <td><article>
+             <label for="hospital">Transfer To: </label>
+               <select (change)="getOwnerHosp($event)">
+                 <option value="none" selected disabled hidden>Select an Option</option>
+                 <option value="hosp1">Hospital 1</option>
+                 <option value="hosp2">Hospital 2</option>
+                 <option value="hosp3">Hospital 3</option>
+               </select>
+             </article></td>
+             <td><button class="btn btn-lg btn-outline-primary" (click)="getLocalFiles(image)">Send</button></td>
+          </tr>
+        </tbody>
+      </table>
+    
+    
+    
+  
   
 </div>
 <br>
 <br>
 <br>
-<div class="row table-responsive border border-dark">
+<div class="row table-responsive">
 
     <!-- table for other orgs files once transfer works -->
-<h5 class="card-title text-center">Files from Other Organizations</h5>
-<table class="table">
-  <thead>
-      <tr>
-        <th scope="col">Time</th>
-        <th scope="col">File</th>
-        <th scope="col">Organization</th>
-        <th scope="col">Doctor</th>
-        <th scope="col">Patient</th>
-        <th scope="col">Preview</th>
-        <th scope="col"></th>
-      </tr>
-  </thead>
-  <tbody *ngFor="let image of imageRecordDisplay; let i=index">
+<h2 class="text-center">Files from Other Organizations</h2>
+<br>
+<table class="table table-hover table-bordered table-rounded">
+  <thead class="thead-dark">
     <tr>
-      <th scope="row">4/6/2022 20:32</th>
-      <td>{{ image.imageName }}</td> 
-      <td>{{ image.transferredBy }}</td>
-      <td>DOC2</td>
-      <td>PID02</td>
-      <td>
-      <div>
-            <img src="{{ image.file }}" alt="{{image.imageName}}" display="block" width="50px" />
-      </div>
-    </td>
-      <td><button class="btn btn-lg btn-outline-primary" (click)="open(content, image)">View</button></td>
+      <th scope="col">Time</th>
+      <th scope="col">File</th>
+      <th scope="col">Organization</th>
+      <th scope="col">Doctor</th>
+      <th scope="col">Patient</th>
+      <th scope="col">Preview</th>
+      <th scope="col"></th>
     </tr>
-  </tbody>
+</thead>
+<tbody *ngFor="let image of imageRecordDisplay; let i=index">
+  <tr>
+    <th scope="row">4/6/2022 20:32</th>
+    <td>{{ image.imageName }}</td> 
+    <td>{{ image.transferredBy }}</td>
+    <td>DOC2</td>
+    <td>PID02</td>
+    <td>
+    <div>
+          <img src="{{ image.file }}" alt="{{image.imageName}}" display="block" width="50px" />
+    </div>
+  </td>
+    <td><button class="btn btn-lg btn-outline-primary" (click)="open(content, image)">View</button></td>
+  </tr>
+</tbody>
 </table>
       
-  </div>
+  
  
 </div>
+<br>
+<br>
+<br>
+
+<div class="row">
+  <div class="card bg-light text-center justify-content-center">
+    <div class="card-body text-center">
+      
+      <h1 class="card-title">Upload File</h1>
+<br>
+       <label class="btn btn-default p-0">
+         <input type="file" accept="image/*" multiple (change)="selectFiles($event)" />
+       </label>
+<br>
+        <div>
+         <img *ngFor='let preview of previews' [src]="preview" class="preview">
+       </div>
+<br>
+       <div *ngIf="message.length" class="alert alert-secondary my-3" role="alert">
+         <ul *ngFor="let msg of message; let i = index">
+           <li>{{ msg }}</li>
+         </ul>
+       </div>
+<br>
+       <button
+          class="btn btn-success btn-sm"
+          [disabled]="!selectedFiles"
+          (click)="uploadFiles()">
+          Upload
+       </button>
+      
+  </div>
+</div>
+</div>
+
+<br>
+<br>
+<br>
 
 <!-- POP-Up once transfer works-->
 
 <ng-template #content let-modal>
   <div *ngIf="imageRecordDisplayTemp.length" >
   <div class="modal-header" *ngFor="let image of imageRecordDisplayTemp" >
-      <h4 class="modal-title" 
+      <h4 class="modal-title text-center" 
           id="modal-basic-title">
           {{image.imageName}}
           
@@ -149,10 +166,9 @@
   </div>
   <div *ngIf="imageRecordDisplayTemp.length" >
   <div class="modal-body" *ngFor="let image of imageRecordDisplayTemp">
-    <div class="row">
+    <div class="row align-items-center justify-content-center">
 
-          <div class="card-title">{{image.imageName}}</div>
-          <div>
+          <div class="mx-auto">
                 <img src="{{image.file}}" alt="{{image.imageName}}" display="block"/>
           </div>
 
@@ -162,25 +178,120 @@
 
       <div class="row table-responsive">
       
-        <h5 class="modal-title">File Transaction History</h5>
-          <table class="table">
-            <thead>
+        <h3 class="modal-title">File Transaction History</h3>
+        <table class="table table-hover table-bordered table-rounded">
+            <thead class="thead-dark">
                 <tr>
                   <th scope="col">Date</th>
                   <th scope="col">Organization</th>
                   <th scope="col">Doctor</th>
-                  <th scope="col">Patient</th>
-                  <th scope="col">Some hash value</th>
+                  <th scope="col">Action</th>
                 </tr>
             </thead>
             <!-- this next line will contain *ngFor="let history of fileHistory" -->
             <tbody>
               <tr>
-                <th scope="row">4/6/2022</th> <!-- sub for {{history.timestamp}} -->
-                <td>HOSP1</td> <!-- sub for {{history.ownerHosp}} -->
-                <td>DOC2</td> <!-- sub for {{history.ownerDoctor}} -->
-                <td>PID02</td> 
-                <td>83CC4ADF72AF9C648DBCAFC3E6A49A081</td> <!-- sub for {{history.hash}} -->
+                <th scope="row">4/15/2022</th>
+                <td>HOSP2</td> 
+                <td>DOC2</td> 
+                <td>Transferred</td> 
+              </tr>
+              <tr>
+                <th scope="row">4/15/2022</th>
+                <td>HOSP2</td> 
+                <td>DOC1</td> 
+                <td>Viewed</td> 
+              </tr>
+              <tr>
+                <th scope="row">4/14/2022</th>
+                <td>HOSP1</td> 
+                <td>DOC2</td> 
+                <td>Viewed</td> 
+              </tr>
+              <tr>
+                <th scope="row">4/13/2022</th>
+                <td>HOSP1</td> 
+                <td>DOC2</td> 
+                <td>Transferred</td> 
+              </tr>
+            </tbody>
+          </table>
+
+      
+    </div>
+  </div> 
+  </div>
+  <div class="modal-footer">
+
+</div>
+</ng-template>
+
+<ng-template #contentTwo let-modal>
+  <div >
+  <div class="modal-header" >
+      <h4 class="modal-title text-center" 
+          id="modal-basic-title">
+          PID4_X_Ray.jpg
+          
+      </h4>
+      <button type="button" class="close"
+              aria-label="Close" (click)="modal.dismiss('Cross click')">
+
+          <span aria-hidden="true">
+              ×
+          </span>
+      </button>
+    </div>
+  </div>
+  <div >
+  <div class="modal-body">
+    <div class="row align-items-center justify-content-center">
+
+          <div class="mx-auto">
+                <img src='data:image/jpeg;base64,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' alt="TestImage" display="block"/>
+          </div>
+
+      </div>
+      <br>
+      <br>
+
+      <div class="row table-responsive">
+      
+        <h3 class="modal-title">File Transaction History</h3>
+        <table class="table table-hover table-bordered table-rounded">
+            <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Organization</th>
+                  <th scope="col">Doctor</th>
+                  <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <!-- this next line will contain *ngFor="let history of fileHistory" -->
+            <tbody>
+              <tr>
+                <th scope="row">4/15/2022</th>
+                <td>HOSP2</td> 
+                <td>DOC2</td> 
+                <td>Transferred</td> 
+              </tr>
+              <tr>
+                <th scope="row">4/15/2022</th>
+                <td>HOSP2</td> 
+                <td>DOC1</td> 
+                <td>Viewed</td> 
+              </tr>
+              <tr>
+                <th scope="row">4/14/2022</th>
+                <td>HOSP1</td> 
+                <td>DOC2</td> 
+                <td>Viewed</td> 
+              </tr>
+              <tr>
+                <th scope="row">4/13/2022</th>
+                <td>HOSP1</td> 
+                <td>DOC2</td> 
+                <td>Transferred</td> 
               </tr>
             </tbody>
           </table>
