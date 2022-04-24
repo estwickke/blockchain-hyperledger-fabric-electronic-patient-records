@@ -3,7 +3,7 @@ const fs = require("fs");
 const db = require("../models");
 const Image = db.images;
 
-const baseUrl = "http://localhost:3001/files/";
+const baseUrl = "http://localhost:3001/filesHosp2/";
 
 const uploadFiles = async (req, res) => {
   try {

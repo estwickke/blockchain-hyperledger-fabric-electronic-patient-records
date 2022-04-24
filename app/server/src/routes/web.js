@@ -25,7 +25,11 @@ let routes = (app) => {
 
   router.get("/filesHosp3", uploadControllerThree.getListFiles);
 
-  //router.get("/files/:name", uploadController.download);
+  router.get("/filesHosp1/:name", uploadControllerOne.download);
+
+  router.get("/filesHosp2/:name", uploadControllerTwo.download);
+
+  router.get("/filesHosp3/:name", uploadControllerThree.download);
 
   return app.use("/", router);
 };

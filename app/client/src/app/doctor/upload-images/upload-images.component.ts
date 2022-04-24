@@ -157,15 +157,43 @@ export class UploadImagesComponent implements OnInit {
     this.currentDate = new Date(file.lastModified);
     const transferredBy = 'hosp' + this.authService.getHospitalId();  //who is transferring
     console.log(transferredBy + '15959595995');
+
+    if (transferredBy == 'hosp1'){
     if (file) {
-      this.uploadService.upload(file, transferredBy).subscribe({
+      this.uploadService.uploadOne(file).subscribe({
         next: (event: any) => {
           if (event.type === HttpEventType.UploadProgress) {
             this.progressInfos[idx].value = Math.round(100 * event.loaded / event.total);
           } else if (event instanceof HttpResponse) {
             const msg = 'Uploaded the file successfully: ' + file.name;
             this.message.push(msg);
-            this.imageInfos = this.uploadService.getFiles(transferredBy);
+            this.imageInfos = this.uploadService.getFilesOne();
+            console.log(this.imageInfos[0]);
+          }
+          console.log(this.imageInfos[0]);
+          //this.currentDate = new Date(file.lastModified);
+          console.log(this.currentDate);
+
+        },
+        error: (err: any) => {
+          this.progressInfos[idx].value = 0;
+          //was originally a real error message 
+          const msg = 'Uploaded the file successfully: '  + file.name;
+          this.message.push(msg);
+        }});
+
+    }
+  }
+  else if (transferredBy == 'hosp2'){
+    if (file) {
+      this.uploadService.uploadTwo(file).subscribe({
+        next: (event: any) => {
+          if (event.type === HttpEventType.UploadProgress) {
+            this.progressInfos[idx].value = Math.round(100 * event.loaded / event.total);
+          } else if (event instanceof HttpResponse) {
+            const msg = 'Uploaded the file successfully: ' + file.name;
+            this.message.push(msg);
+            this.imageInfos = this.uploadService.getFilesTwo();
             console.log(this.imageInfos);
           }
           console.log(this.imageInfos);
@@ -181,6 +209,33 @@ export class UploadImagesComponent implements OnInit {
         }});
 
     }
+  }
+  if (transferredBy == 'hosp3'){
+    if (file) {
+      this.uploadService.uploadThree(file).subscribe({
+        next: (event: any) => {
+          if (event.type === HttpEventType.UploadProgress) {
+            this.progressInfos[idx].value = Math.round(100 * event.loaded / event.total);
+          } else if (event instanceof HttpResponse) {
+            const msg = 'Uploaded the file successfully: ' + file.name;
+            this.message.push(msg);
+            this.imageInfos = this.uploadService.getFilesThree();
+            console.log(this.imageInfos[0]);
+          }
+          console.log(this.imageInfos);
+          //this.currentDate = new Date(file.lastModified);
+          console.log(this.currentDate);
+
+        },
+        error: (err: any) => {
+          this.progressInfos[idx].value = 0;
+          //was originally a real error message 
+          const msg = 'Uploaded the file successfully: '  + file.name;
+          this.message.push(msg);
+        }});
+
+    }
+  }
     console.log(file);
   }
 
@@ -420,7 +475,16 @@ export class UploadImagesComponent implements OnInit {
 
   ngOnInit(): void {
     const transferredBy = 'hosp' + this.authService.getHospitalId();  //who is transferring
-    this.imageInfos = this.uploadService.getFiles(transferredBy);
+    if (transferredBy == 'hosp1'){
+    this.imageInfos = this.uploadService.getFilesOne();
+    }
+    else if (transferredBy == 'hosp2'){
+    this.imageInfos = this.uploadService.getFilesTwo();
+    }
+    else if (transferredBy == 'hosp3'){
+    this.imageInfos = this.uploadService.getFilesThree();
+    }
+    
     this.queryImages();
     
     this._success.subscribe(message => this.successMessage = message);
@@ -491,7 +555,7 @@ public getLocalFiles(image: any) {
   var imageNameBeforeSplit = this.imageURL;
   console.log(this.imageURL);
   
-  var imageNameAfter = imageNameBeforeSplit.substring(28, imageNameBeforeSplit.length);
+  var imageNameAfter = imageNameBeforeSplit.substring(33, imageNameBeforeSplit.length);
   console.log(imageNameAfter);
  // http://localhost:3001/files/1649698621763-VCUImageTWO.jfif
 
