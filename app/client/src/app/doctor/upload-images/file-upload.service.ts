@@ -102,9 +102,14 @@ export class FileUploadService {
 
 }
 
-getTransferLedger(imageName: any): Observable<any> {
-  console.log(imageName + '106060606');
-  return this.http.get(`${this.baseUrl}/doctors/getTransferLedger`, imageName);
+getTransferLedger(): Observable<any> {
+  return this.http.get(`${this.baseUrl}/doctors/getTransferLedger`);
+}
+
+postTransferLedger(imageName: any): Observable<any> {
+  console.log(imageName.imageName + '106060606');
+  return this.http.post(`${this.baseUrl}/doctors/postTransferLedger`, imageName);
 
 }
+
 }

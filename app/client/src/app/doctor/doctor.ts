@@ -50,6 +50,24 @@ export class ImageViewRecord{
   }
 }
 
+export interface LedgerRecord{
+  date: string;
+  ownerHosp: string;
+  action: string;
+}
+
+export class LedgerViewRecord{
+  date= '';
+  ownerHosp= '';
+  action= '';
+
+  constructor( LedgerRecord:  LedgerRecord) {
+    this.date= LedgerRecord.date;
+    this.ownerHosp= LedgerRecord.ownerHosp;
+    this.action= LedgerRecord.action;
+  }
+}
+
 export class DisplayVal {
   keyName: string | number | boolean;
   displayName: string;

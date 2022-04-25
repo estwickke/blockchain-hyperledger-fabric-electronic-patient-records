@@ -11,6 +11,7 @@ const {ROLE_DOCTOR, capitalize, getMessage, validateRole} = require('../utils.js
 const network = require('../../patient-asset-transfer/application-javascript/app.js');
 const e = require('express');
 const ledgerHistory = {};
+var ledgerImageName = '';
 
 
 /**
@@ -71,21 +72,24 @@ exports.transferLedger = async (req, res) => {
     console.log(ledgerHistory[ledgerImageName] + '7171771771771771771');
 };  
 
-exports.getTransferLedger = async (req, res, imageName) => {
+exports.getTransferLedger = async (req, res) => {
+
+  console.log(ledgerHistory[ledgerImageName] + '818188188188188181881881');
+  var ledgerArray = Object.values(ledgerHistory[ledgerImageName]);
+  console.log(ledgerArray);
+  return res.status(200).send(ledgerArray);
   
+};  
+
+exports.postTransferLedger = async (req, res) => {
   const data = JSON.stringify(req.body);
   
   const dataParsed = JSON.parse(data);
-  console.log(dataParsed.imageName + ' This is GETledger imageName');
+  console.log(dataParsed.imageName + ' This is POSTledger imageName');
  // console.log(dataParsed.ownerHosp + ' This is ledger ownerHosp');
  // console.log(dataParsed.currentDate + ' This is ledger DATE');
   
-  const ledgerImageName = JSON.stringify(dataParsed.imageName);
-
-  console.log(ledgerImageName + '858588585');
-  console.log(ledgerHistory + '818188188188188181881881');
-  
-  return res.status(200).send(JSON.parse(ledgerHistory[ledgerImageName]));
+  ledgerImageName = JSON.stringify(dataParsed.imageName);
   
 };  
 

@@ -6,7 +6,7 @@ import { DoctorService } from '../doctor.service';
 import { AuthService } from '../../core/auth/auth.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ImageRecord, ImageViewRecord} from '../doctor';
+import { ImageRecord, ImageViewRecord, LedgerRecord, LedgerViewRecord} from '../doctor';
 
 import { DisplayVal } from '../../patient/patient';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -25,6 +25,12 @@ class image {
   File!: string;
   ownerHosp!: string;
   transferredBy!: string;
+};
+
+class ledger {
+  date!: string;
+  ownerHosp!: string;
+  action!: string;
 };
 
 
@@ -56,6 +62,7 @@ export class UploadImagesComponent implements OnInit {
   public imageName: any;
   public imageRecord: Array<ImageViewRecord> = [];
   public imageRecordDisplay: Array<ImageRecord> = [];
+  public LedgerRecordDisplay: Array<LedgerRecord> = [];
   public error: any = null;
   private allSub = new Subscription();
   public transferImageData: any;
@@ -95,6 +102,7 @@ export class UploadImagesComponent implements OnInit {
 
   imageInfos?: Observable<any>;
   transferLedger?: Observable<any>;
+  transferLedgerInfos?: Observable<any>;
   private sub?: Subscription;
   
 
@@ -105,6 +113,11 @@ export class UploadImagesComponent implements OnInit {
     new DisplayVal(ImageViewRecord.prototype.transferredBy, 'Transferred By')
   ];
   transferLedgerData: any;
+  transferLedgerTemp: any;
+  transferLedgerImage: any;
+  LedgerRecord: any[];
+  stringLedger: string;
+  objectLedger: any;
 
     
 
@@ -536,11 +549,34 @@ export class UploadImagesComponent implements OnInit {
     console.log(image);
     this.imageRecordDisplayTemp.push(image);
     console.log(this.imageRecordDisplayTemp);
+    console.log(image.imageName + '53939393993 in upload.ts');
+
+    this.transferLedgerImage = this.fb.group({
+      imageName: [image.imageName, Validators.required]
+    });
+
     this.allSub.add(
-      this.uploadService.getTransferLedger(image.imageName).subscribe(x => this.transferLedger = x)
+      this.uploadService.postTransferLedger(this.transferLedgerImage.value).subscribe(x => this.transferLedgerTemp = x)
     );
-    console.log(this.transferLedger);
-    
+    this.allSub.add(
+      this.uploadService.getTransferLedger().subscribe(x => {
+        this.LedgerRecord = [];
+        const data = x as Array<LedgerRecord>;
+        console.log(data);
+        let count: number = 0;
+        for(var i = 0; i <data.length; i++){
+          let LedgerBlob = Object.values(data)[i];
+          console.log(LedgerBlob);
+
+
+          this.LedgerRecord.push(LedgerBlob);
+        }
+
+        console.log(this.LedgerRecord);
+      }
+
+      
+    ));
 
     this.modalService.open(content, { size: 'xl' }).result.then((result) => {
       this.closeResult = 'Closed with: ${result}';
