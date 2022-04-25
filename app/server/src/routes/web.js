@@ -19,6 +19,10 @@ let routes = (app) => {
 
   router.post("/uploadHosp3", uploadThree.single("file"), uploadControllerThree.uploadFiles);
 
+  router.post("/transferLedger", uploadControllerOne.transferLedger);
+
+  router.get("/getTransferLedger", uploadControllerOne.getTransferLedger);
+
   router.get("/filesHosp1", uploadControllerOne.getListFiles);
   
   router.get("/filesHosp2", uploadControllerTwo.getListFiles);

@@ -1,5 +1,5 @@
 const fs = require("fs");
-
+var dict = {};
 const db = require("../models");
 const Image = db.images;
 
@@ -75,8 +75,26 @@ const download = (req, res) => {
   });
 };
 
+const transferLedger = async (req, res) => {
+  console.log("THIS IS IN TRANSFERLEDGER");
+  dict[req.params.fileName] = req.params.date;
+  dict[req.params.fileName] = req.params.ownerHosp;
+  console.log(dict[req.params.fileName] + 'THIS IS THE DICTIONARY');
+  res.status(200).send("TransferLedger has been hit");
+
+  
+};
+
+const getTransferLedger = (req, res) => {
+  console.log("THIS IS IN GETTRANSFERLEDGER");
+  res.status(200).send(dict);
+  
+};
+
 module.exports = {
   uploadFiles,
   getListFiles,
-  download
+  download,
+  transferLedger,
+  getTransferLedger
 };

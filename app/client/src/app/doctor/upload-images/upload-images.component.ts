@@ -46,9 +46,12 @@ export class UploadImagesComponent implements OnInit {
     ownerHosp : new FormControl(),
   });
 
+  public ledgerHistory = {};
+  public key = '';
   public isVCU: boolean;
   public parsedhospID: any;
   public form: FormGroup;
+  public transferForm: FormGroup;
   public popUpForm: FormGroup;
   public imageName: any;
   public imageRecord: Array<ImageViewRecord> = [];
@@ -91,6 +94,7 @@ export class UploadImagesComponent implements OnInit {
 
 
   imageInfos?: Observable<any>;
+  transferLedger?: Observable<any>;
   private sub?: Subscription;
   
 
@@ -100,6 +104,7 @@ export class UploadImagesComponent implements OnInit {
     new DisplayVal(ImageViewRecord.prototype.file, 'File'),
     new DisplayVal(ImageViewRecord.prototype.transferredBy, 'Transferred By')
   ];
+  transferLedgerData: any;
 
     
 
@@ -154,7 +159,7 @@ export class UploadImagesComponent implements OnInit {
 
   upload(idx: number, file: File): void {
     this.progressInfos[idx] = { value: 0, fileName: file.name };
-    this.currentDate = new Date(file.lastModified);
+    this.currentDate = new Date();
     const transferredBy = 'hosp' + this.authService.getHospitalId();  //who is transferring
     console.log(transferredBy + '15959595995');
 
@@ -169,9 +174,12 @@ export class UploadImagesComponent implements OnInit {
             this.message.push(msg);
             this.imageInfos = this.uploadService.getFilesOne();
             console.log(this.imageInfos[0]);
+            //this.addLedgerHistory(file.name, this.ownerHosp, this.currentDate.toDateString(), "Uploaded");
           }
           console.log(this.imageInfos[0]);
           //this.currentDate = new Date(file.lastModified);
+          console.log(transferredBy + 'test to see whats being passed to the dictionary');
+          //this.addLedgerHistory(file.name, transferredBy, this.currentDate.toDateString(), "Uploaded");
           console.log(this.currentDate);
 
         },
@@ -413,6 +421,8 @@ export class UploadImagesComponent implements OnInit {
     console.log(file);
     //const files = file;
     const formData: FormData = new FormData();
+    const transferFormData: FormData = new FormData();
+    this.currentDate = new Date();
 
     var min = 0;
     var max = 100;
@@ -424,6 +434,14 @@ export class UploadImagesComponent implements OnInit {
     const transferredBy = 'hosp' + this.authService.getHospitalId();  //who is transferring
     //const imageIDName = this.imageID;
     const reader = new FileReader();
+
+    this.transferForm = this.fb.group({
+      imageName: [file.name, Validators.required],
+      ownerHosp: [this.ownerHosp, Validators.required], //target hospital (transfer to)
+      currentDate: [this.currentDate, Validators.required],
+    });
+
+    console.log(this.transferForm.value);
     
     //this.imageBlobString = imageBlob.toString();
     console.log(imageBlob);
@@ -435,6 +453,13 @@ export class UploadImagesComponent implements OnInit {
       transferredBy: [transferredBy, Validators.required],
     });
     
+    transferFormData.append('name', file.name);
+    transferFormData.append('ownerHosp', this.ownerHosp);
+    transferFormData.append('date', this.currentDate.toDateString());
+
+    
+    //this.uploadService.transferLedger(transferFormData);
+
     console.log(this.ownerHosp + '236363636636');
     //console.log(this.imageID + '237373737');
 
@@ -454,11 +479,16 @@ export class UploadImagesComponent implements OnInit {
       this.doctorService.transfer(this.form.value).subscribe(x => this.transferImageData = x)
     );
 
+    this.allSub.add(
+      this.uploadService.transferLedger(this.transferForm.value).subscribe(x => this.transferLedgerData = x)
+    );
+
     this.messageTransfer = [];
     const msg = 'Transferred successfully.';
     this.messageTransfer.push(msg);
 
   }
+
   public isVCUMethod(): void {
     console.log(this.doctorId);
     var doctorID = this.doctorId;
@@ -506,6 +536,11 @@ export class UploadImagesComponent implements OnInit {
     console.log(image);
     this.imageRecordDisplayTemp.push(image);
     console.log(this.imageRecordDisplayTemp);
+    this.allSub.add(
+      this.uploadService.getTransferLedger(image.imageName).subscribe(x => this.transferLedger = x)
+    );
+    console.log(this.transferLedger);
+    
 
     this.modalService.open(content, { size: 'xl' }).result.then((result) => {
       this.closeResult = 'Closed with: ${result}';
@@ -577,5 +612,16 @@ public getLocalFiles(image: any) {
   })()
   console.log(this.getLocalFiles);
 }
+
+public addLedgerHistory(ledgerImageName: any, ledgerOwnerHosp: any, date: any, action: any){
+    console.log(ledgerImageName);
+    console.log(date);
+    console.log(action);
+
+    this.key = ledgerImageName;
+    this.ledgerHistory[this.key] = [ledgerOwnerHosp, date, action];
+    console.log(this.ledgerHistory);
+  }
+  
 }
 
