@@ -1,4 +1,4 @@
-<app-toolbar >
+<app-toolbar class="app-toolbar">
   <app-toolbar-link text="File Sharing Center" [routerLink]="['upload-images']">
   </app-toolbar-link>
   <app-toolbar-link text="View Patients" icon="users" [routerLink]="['patients']">
@@ -100,7 +100,7 @@
 
                  </tr>
              </thead>
-             <tbody *ngFor="let transaction of TransactionRecord">
+             <tbody *ngFor="let transaction of TransactionRecord.slice().reverse() | slice:0:10; let i=index"> 
                <tr>
                  <th scope="row">{{transaction.date}}</th>
                  
@@ -109,6 +109,7 @@
                
              </tbody>
            </table>
+          
     </div>
     
     

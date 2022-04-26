@@ -188,6 +188,7 @@ export class UploadImagesComponent implements OnInit {
             this.message.push(msg);
             this.imageInfos = this.uploadService.getFilesOne();
             console.log(this.imageInfos[0]);
+            
             //this.addLedgerHistory(file.name, this.ownerHosp, this.currentDate.toDateString(), "Uploaded");
           }
           console.log(this.imageInfos[0]);
@@ -259,6 +260,15 @@ export class UploadImagesComponent implements OnInit {
     }
   }
     console.log(file);
+    this.transferForm = this.fb.group({
+              imageName: [file.name, Validators.required],
+              ownerHosp: [this.ownerHosp, Validators.required], //target hospital (transfer to)
+              currentDate: [this.currentDate, Validators.required],
+            });
+
+            this.allSub.add(
+              this.doctorService.transaction(this.transferForm.value).subscribe(x => this.transaction = x)
+            );
   }
 
   public queryImages(): void{
@@ -417,6 +427,7 @@ export class UploadImagesComponent implements OnInit {
               }
     
           }
+          
           console.log(this.imageRecordDisplay);
         
         })
@@ -582,6 +593,16 @@ export class UploadImagesComponent implements OnInit {
 
       
     ));
+      var tempString = 'temp';
+    this.transferForm = this.fb.group({
+      imageName: [tempString, Validators.required],
+      ownerHosp: [this.ownerHosp, Validators.required], //target hospital (transfer to)
+      currentDate: [this.currentDate, Validators.required],
+    });
+
+    this.allSub.add(
+      this.doctorService.transaction(this.transferForm.value).subscribe(x => this.transaction = x)
+    );
 
     this.modalService.open(content, { size: 'xl' }).result.then((result) => {
       this.closeResult = 'Closed with: ${result}';

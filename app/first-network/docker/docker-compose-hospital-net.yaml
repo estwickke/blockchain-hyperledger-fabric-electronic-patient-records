@@ -19,6 +19,7 @@ services:
     container_name: orderer.lithium.com
     image: hyperledger/fabric-orderer:$IMAGE_TAG
     environment:
+    
       - FABRIC_LOGGING_SPEC=INFO
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
       - ORDERER_GENERAL_LISTENPORT=7050

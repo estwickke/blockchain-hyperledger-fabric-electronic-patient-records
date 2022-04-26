@@ -87,6 +87,7 @@ exports.postTransactionID = async (req, res) => {
 
   var id = crypto.randomBytes(20).toString('hex'); //generate new hash each time its called
   var transactionDate = new Date(); //get current date
+  transactionDate.setHours(transactionDate.getHours()-4);
   
   console.log(id); //testing Hash Values
   

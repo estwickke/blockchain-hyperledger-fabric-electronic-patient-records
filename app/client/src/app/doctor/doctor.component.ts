@@ -13,6 +13,7 @@ import { Chart } from 'node_modules/chart.js';
 
 
 
+
 @Component({
   selector: 'app-doctor',
   templateUrl: './doctor.component.html',
@@ -77,6 +78,8 @@ private allSub = new Subscription();
 
           this.TransactionRecord.push(Transaction);
         }
+
+        
 
         console.log(this.TransactionRecord);
       }
