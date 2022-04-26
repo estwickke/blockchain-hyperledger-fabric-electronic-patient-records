@@ -232,6 +232,8 @@ app.post('/doctors/transfer', authenticateJWT, doctorRoutes.transferImage);
 app.post('/doctors/transferLedger', authenticateJWT, doctorRoutes.transferLedger);
 app.get('/doctors/getTransferLedger', authenticateJWT, doctorRoutes.getTransferLedger);
 app.post('/doctors/postTransferLedger', authenticateJWT, doctorRoutes.postTransferLedger);
+app.post('/doctors/transaction', authenticateJWT, doctorRoutes.postTransactionID);
+app.get('/doctors/getTransaction', authenticateJWT, doctorRoutes.getTransactionID);
 app.get('/doctors/allTransferredImagesHosp1', authenticateJWT, doctorRoutes.queryAllTransferredImagesHosp1);
 app.get('/doctors/allTransferredImagesHosp2', authenticateJWT, doctorRoutes.queryAllTransferredImagesHosp2);
 app.get('/doctors/allTransferredImagesHosp3', authenticateJWT, doctorRoutes.queryAllTransferredImagesHosp3);

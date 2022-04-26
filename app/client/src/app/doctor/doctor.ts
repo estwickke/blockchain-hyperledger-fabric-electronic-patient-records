@@ -31,8 +31,7 @@ export interface ImageRecord{
 
 export interface transactionRecord{
   date: string;
-  time: string;
-  hash: string;
+  transactionID: string;
 }
 
 

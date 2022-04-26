@@ -37,6 +37,8 @@ export class DoctorComponent implements OnInit, OnDestroy {
 //  ];
 
 public transactionID: any;
+private allSub = new Subscription();
+  TransactionRecord: any[];
 
 
   constructor(
@@ -62,13 +64,34 @@ public transactionID: any;
 
   public refresh(): void {
     this.doctorRecordObs = this.doctorService.getDoctorByHospitalId(this.authService.getHospitalId(), this.doctorId);
-    this.transactionID = this.doctorService.transactionRecord();
-    console.log(this.transactionID);
+    this.allSub.add(
+      this.doctorService.getTransaction().subscribe(x => {
+        this.TransactionRecord = [];
+        const data = x as Array<transactionRecord>;
+        console.log(data);
+        let count: number = 0;
+        for(var i = 0; i <data.length; i++){
+          let Transaction = Object.values(data)[i];
+          console.log(Transaction);
+
+
+          this.TransactionRecord.push(Transaction);
+        }
+
+        console.log(this.TransactionRecord);
+      }
+
+      
+    ));
+    
+    console.log(this.transactionRecordDisplay);
+    
     //console.log(this.transactionID);
     //this.all_images = this.doctorService.fetchAllTransferredImages(); 
-    this.transactionRecordDisplay.push(this.transactionID);
+    
     console.log(this.transactionRecordDisplay[0]);
     console.log(this.transactionRecordDisplay[1]);
+    console.log(this.transactionRecordDisplay);
 
   }
 

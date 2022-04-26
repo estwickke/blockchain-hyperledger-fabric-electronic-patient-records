@@ -53,6 +53,14 @@ export class DoctorService {
     return this.http.get(this.doctorURL + '/allTransferredImagesHosp3');
   }
 
+  public transaction(transferLedgerData: any): Observable<any> {
+    return this.http.post(this.doctorURL + '/transaction', transferLedgerData);
+  }
+
+  public getTransaction(): Observable<any> {
+    return this.http.get(this.doctorURL + '/getTransaction');
+  }
+
   public transactionRecord(): Object {
     class transactionRecord {
       date: any;

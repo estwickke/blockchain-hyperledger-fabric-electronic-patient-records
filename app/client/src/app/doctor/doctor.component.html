@@ -88,84 +88,30 @@
 <br>
 
 <div class="container">
-    <div *ngIf="isVCU==true" class="row">
+    <div class="row">
       <h1>Recent Transactions</h1>
            <table class="table table-striped">
 
              <thead class="thead-dark"> 
                  <tr>
-                   <th scope="col">Date</th>
+    
                    <th scope="col">Time</th>
-                   <th scope="col">Hash</th>
+                   <th scope="col">Transaction ID</th>
 
                  </tr>
              </thead>
-             <tbody>
+             <tbody *ngFor="let transaction of TransactionRecord">
                <tr>
-                 <th scope="row">04/14/22</th>
-                 <td>20:12</td>
-                 <td>25fc0e7096fc653718202dc30b0c580b8ab87eac11a700cba03a7c021bc35b0c</td>
+                 <th scope="row">{{transaction.date}}</th>
+                 
+                 <td>{{transaction.transactionID}}</td>
                </tr>
-               <tr>
-                 <th scope="row">04/14/22</th>
-                 <td>19:07</td>
-                 <td>4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a</td>
-               </tr>
-               <tr>
-                 <th scope="row">04/14/22</th>
-                 <td>17:05</td>
-                 <td>3538a1ef2e113da64249eea7bd068b585ec7ce5df73b2d1e319d8c9bf47eb314</td>
-               </tr>
-               <tr>
-                 <th scope="row">04/14/22</th>
-                 <td>14:03</td>
-                 <td>71ee45a3c0db9a9865f7313dd3372cf60dca6479d46261f3542eb9346e4a04d6</td>
-               </tr>
+               
              </tbody>
            </table>
     </div>
     
-    <div *ngIf="isVCU==false" class="row">
-      <h1>Recent Transactions</h1>
-           <table class="table table-striped">
-
-             <thead class="thead-dark"> 
-                 <tr>
-                   <th scope="col">Date</th>
-                   <th scope="col">Time</th>
-                   <th scope="col">Hash</th>
-
-                 </tr>
-             </thead>
-             <tbody>
-               <tr>
-                 <th scope="row">04/15/22</th>
-                 <td>3:26</td>
-                 <td>e11d8cb94b54e0a2fd0e780f93dd51837fd39bf0c9b86f21e760d02a8550ddf7</td>
-               </tr>
-               <tr>
-                 <th scope="row">04/14/22</th>
-                 <td>20:12</td>
-                 <td>25fc0e7096fc653718202dc30b0c580b8ab87eac11a700cba03a7c021bc35b0c</td>
-               </tr>
-               <tr>
-                 <th scope="row">04/14/22</th>
-                 <td>19:07</td>
-                 <td>4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a</td>
-               </tr>
-               <tr>
-                 <th scope="row">04/14/22</th>
-                 <td>17:05</td>
-                 <td>3538a1ef2e113da64249eea7bd068b585ec7ce5df73b2d1e319d8c9bf47eb314</td>
-               </tr>
-               <tr>
-                 <th scope="row">04/14/22</th>
-                 <td>14:03</td>
-                 <td>71ee45a3c0db9a9865f7313dd3372cf60dca6479d46261f3542eb9346e4a04d6</td>
-               </tr>
-             </tbody>
-           </table>
-    </div>
+    
 
       
  

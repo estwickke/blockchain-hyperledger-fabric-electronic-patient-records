@@ -118,6 +118,7 @@ export class UploadImagesComponent implements OnInit {
   LedgerRecord: any[];
   stringLedger: string;
   objectLedger: any;
+  transaction: any;
 
     
 
@@ -496,6 +497,10 @@ export class UploadImagesComponent implements OnInit {
       this.uploadService.transferLedger(this.transferForm.value).subscribe(x => this.transferLedgerData = x)
     );
 
+    this.allSub.add(
+      this.doctorService.transaction(this.transferForm.value).subscribe(x => this.transaction = x)
+    );
+    
     this.messageTransfer = [];
     const msg = 'Transferred successfully.';
     this.messageTransfer.push(msg);

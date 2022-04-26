@@ -10,8 +10,10 @@
 const {ROLE_DOCTOR, capitalize, getMessage, validateRole} = require('../utils.js');
 const network = require('../../patient-asset-transfer/application-javascript/app.js');
 const e = require('express');
+var crypto = require('crypto');
 const ledgerHistory = {};
 var ledgerImageName = '';
+const transactionID = [];
 
 
 /**
@@ -79,7 +81,37 @@ exports.getTransferLedger = async (req, res) => {
   console.log(ledgerArray);
   return res.status(200).send(ledgerArray);
   
-};  
+}; 
+
+exports.postTransactionID = async (req, res) => {
+
+  var id = crypto.randomBytes(20).toString('hex'); //generate new hash each time its called
+  var transactionDate = new Date(); //get current date
+  
+  console.log(id); //testing Hash Values
+  
+  //Object to store the hash values into the array 
+  let transaction = {
+      date: transactionDate,
+      transactionID:id
+  }
+  
+  transactionID.push(transaction);
+  
+  console.log(transactionID); //printing the array 
+  console.log(transaction); //printing the object
+  
+  };
+  
+  exports.getTransactionID = async(req, res) => {
+    console.log(transactionID + '1070707');
+    //const dataParsed = JSON.parse(transactionID);
+    const stringifyParsed = JSON.stringify(transactionID);
+    //console.log(dataParsed + "THIS IS DATA PARSED");
+    console.info(transactionID + '111111111');
+    console.log(stringifyParsed + '1111112');
+  return res.status(200).send(stringifyParsed);
+  }
 
 exports.postTransferLedger = async (req, res) => {
   const data = JSON.stringify(req.body);
