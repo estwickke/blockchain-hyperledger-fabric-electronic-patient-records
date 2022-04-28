@@ -1,15 +1,10 @@
 /**
- * @author Jathin Sreenivas
- * @email jathin.sreenivas@stud.fra-uas.de
- * @create date 2020-12-26 13:26:42
- * @modify date 2021-03-14 20:50:51
  * @desc Referenced from https://github.com/hyperledger/fabric-samples/tree/master/test-application/javascript
  */
 
 
 /**
  *
- * @author Jathin Sreenivas
  * @param {*} FabricCAServices
  * @param {*} ccp
  * @param {string} caHostName
@@ -26,7 +21,6 @@ exports.buildCAClient = (FabricCAServices, ccp, caHostName) => {
 };
 
 /**
- * @author Jathin Sreenivas
  * @param  {*} caClient
  * @param  {*} wallet
  * @param  {string} orgMspId
@@ -62,7 +56,6 @@ exports.enrollAdmin = async (caClient, wallet, orgMspId, adminUserId, adminUserP
 
 
 /**
- * @author Jathin Sreenivas
  * @param  {*} caClient
  * @param  {*} wallet
  * @param  {string} orgMspId

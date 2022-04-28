@@ -1,8 +1,4 @@
 /**
- * @author Varsha Kamath
- * @email varsha.kamath@stud.fra-uas.de
- * @create date 2021-01-14 21:50:38
- * @modify date 2021-02-05 20:03:33
  * @desc [Smartcontract to read, update patient details in legder]
  */
 /*
@@ -462,7 +458,6 @@ async queryAllTransferredImagesHosp3(ctx) {
 
 
     /**
-     * @author Jathin Sreenivas
      * @param  {Context} ctx
      * @description Get the client used to connect to the network.
      */

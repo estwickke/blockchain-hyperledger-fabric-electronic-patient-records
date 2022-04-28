@@ -57,9 +57,9 @@ export class FileUploadService {
 
   transferLedger(transferLedgerData: any): Observable<any> {
     const formData: FormData = new FormData();
-    console.log(transferLedgerData.imageName);
-    console.log(transferLedgerData.ownerHosp);
-    console.log(transferLedgerData.currentDate);
+    
+    
+    
     
     
     return this.http.post(this.baseUrl + '/doctors/transferLedger', transferLedgerData);
@@ -75,9 +75,9 @@ export class FileUploadService {
     formData.append('hospitalId', hospitalId);
 
     
-    console.log(file);
-    console.log(file.name);
-    console.log(hospitalId);
+    
+    
+    
     
     const req = new HttpRequest('POST', `${this.baseUrl}/doctors/transfer`, formData, {
       reportProgress: true,
@@ -107,7 +107,7 @@ getTransferLedger(): Observable<any> {
 }
 
 postTransferLedger(imageName: any): Observable<any> {
-  console.log(imageName.imageName + '106060606');
+  
   return this.http.post(`${this.baseUrl}/doctors/postTransferLedger`, imageName);
 
 }

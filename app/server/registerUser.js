@@ -1,8 +1,4 @@
 /**
- * @author Jathin Sreenivas
- * @email jathin.sreenivas@stud.fra-uas.de
- * @create date 2020-12-26 13:26:42
- * @modify date 2021-03-13 15:04:01
  * @desc This file creates a user named 'appUser' at Hospital 1. (Just for testing. Use the API to create a patient)
  */
 

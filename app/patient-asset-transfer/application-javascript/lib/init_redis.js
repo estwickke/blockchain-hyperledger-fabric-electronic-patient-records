@@ -1,10 +1,3 @@
-/**
- * @author Kshitij Yelpale
- * @email kshitij.yelpale@stud.fra-uas.de
- * @create date 2021-01-20 02:00:00
- * @modify date 2021-01-20 02:00:00
- * @desc Client library to connect redis key-value pair database
- */
 
 const redis = require('redis');
 

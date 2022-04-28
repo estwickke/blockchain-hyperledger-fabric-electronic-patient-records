@@ -1,8 +1,4 @@
 /**
- * @author Varsha Kamath
- * @email varsha.kamath@stud.fra-uas.de
- * @create date 2021-01-04 19:06:47
- * @modify date 2021-01-04 19:06:47
  * @desc [The base patient class]
  */
 /*

@@ -84,7 +84,7 @@ export class UploadImagesComponent implements OnInit {
   objectImage: any;
   
   ownerHosp: string = '';
-  //imageID: string = '';
+  
   public doctorId: any;
 
   previewsTransfer: string[] = [];
@@ -151,7 +151,7 @@ export class UploadImagesComponent implements OnInit {
         const reader = new FileReader();
 
         reader.onload = (e: any) => {
-          console.log(e.target.result);
+          
           this.imageString = e.target.result;
           this.previews.push(e.target.result);
         };
@@ -174,8 +174,8 @@ export class UploadImagesComponent implements OnInit {
   upload(idx: number, file: File): void {
     this.progressInfos[idx] = { value: 0, fileName: file.name };
     this.currentDate = new Date();
-    const transferredBy = 'hosp' + this.authService.getHospitalId();  //who is transferring
-    console.log(transferredBy + '15959595995');
+    const transferredBy = 'hosp' + this.authService.getHospitalId();  
+    
 
     if (transferredBy == 'hosp1'){
     if (file) {
@@ -187,20 +187,20 @@ export class UploadImagesComponent implements OnInit {
             const msg = 'Uploaded the file successfully: ' + file.name;
             this.message.push(msg);
             this.imageInfos = this.uploadService.getFilesOne();
-            console.log(this.imageInfos[0]);
             
-            //this.addLedgerHistory(file.name, this.ownerHosp, this.currentDate.toDateString(), "Uploaded");
+            
+            
           }
-          console.log(this.imageInfos[0]);
-          //this.currentDate = new Date(file.lastModified);
-          console.log(transferredBy + 'test to see whats being passed to the dictionary');
-          //this.addLedgerHistory(file.name, transferredBy, this.currentDate.toDateString(), "Uploaded");
-          console.log(this.currentDate);
+          
+          
+          
+          
+          
 
         },
         error: (err: any) => {
           this.progressInfos[idx].value = 0;
-          //was originally a real error message 
+          
           const msg = 'Uploaded the file successfully: '  + file.name;
           this.message.push(msg);
         }});
@@ -217,16 +217,16 @@ export class UploadImagesComponent implements OnInit {
             const msg = 'Uploaded the file successfully: ' + file.name;
             this.message.push(msg);
             this.imageInfos = this.uploadService.getFilesTwo();
-            console.log(this.imageInfos);
+            
           }
-          console.log(this.imageInfos);
-          //this.currentDate = new Date(file.lastModified);
-          console.log(this.currentDate);
+          
+          
+          
 
         },
         error: (err: any) => {
           this.progressInfos[idx].value = 0;
-          //was originally a real error message 
+          
           const msg = 'Uploaded the file successfully: '  + file.name;
           this.message.push(msg);
         }});
@@ -243,26 +243,26 @@ export class UploadImagesComponent implements OnInit {
             const msg = 'Uploaded the file successfully: ' + file.name;
             this.message.push(msg);
             this.imageInfos = this.uploadService.getFilesThree();
-            console.log(this.imageInfos[0]);
+            
           }
-          console.log(this.imageInfos);
-          //this.currentDate = new Date(file.lastModified);
-          console.log(this.currentDate);
+          
+          
+          
 
         },
         error: (err: any) => {
           this.progressInfos[idx].value = 0;
-          //was originally a real error message 
+          
           const msg = 'Uploaded the file successfully: '  + file.name;
           this.message.push(msg);
         }});
 
     }
   }
-    console.log(file);
+    
     this.transferForm = this.fb.group({
               imageName: [file.name, Validators.required],
-              ownerHosp: [this.ownerHosp, Validators.required], //target hospital (transfer to)
+              ownerHosp: [this.ownerHosp, Validators.required], 
               currentDate: [this.currentDate, Validators.required],
             });
 
@@ -273,47 +273,47 @@ export class UploadImagesComponent implements OnInit {
 
   public queryImages(): void{
     const formData: FormData = new FormData();
-    const transferredBy = 'hosp' + this.authService.getHospitalId();  //who is transferring
+    const transferredBy = 'hosp' + this.authService.getHospitalId();  
     this.form = this.fb.group({
       transferredBy: [transferredBy, Validators.required],
     });
     
-    //console.log(this.ownerHosp + '236363636636');
-    //console.log(this.imageID + '237373737');
+    
+    
     formData.append('transferredBy', transferredBy);
     var imageName = '';
-    console.log(transferredBy + '167676776766');
-    console.log(this.form.value + '16868686868686');
-    //ImageRecord.imageName = "name";
+    
+    
+    
     if (transferredBy === 'hosp1'){
       this.allSub.add(
         this.doctorService.fetchAllTransferredImagesHosp1().subscribe(x => {
           this.imageRecord = [];
           const data = x as Array<ImageRecord>;
           let count: number = 0;
-          //while (Object.values(data)[count] != null){
+          
           for(var i = 0; i <data.length; i++){
             let MyImageBlob = Object.values(data)[i];
             
-         // let MyImageName = Object.values(data)[1];
-         // let MyImageOwner = Object.values(data)[2];
-         // let MyImageTransferredBy = Object.values(data)[3];
-          //let testIndex = Object.values(data)[4];
+         
+         
+         
+          
   
-         // this.imageRecord.push(MyImageName);
+         
             this.imageRecord.push(MyImageBlob);
           }
-         // this.imageRecord.push(MyImageOwner);
-         // this.imageRecord.push(MyImageTransferredBy);
+         
+         
   
       
           this.stringImage = JSON.stringify(this.imageRecord);
           this.objectImage = JSON.parse(this.stringImage);
-          console.log(this.objectImage);
-          //console.log(this.objectImage[0].image.imageName);
-          //console.log(this.stringImage + '1767676767676767676');
+          
+          
+          
           let imageLength = this.objectImage.length;
-          console.log(imageLength);
+          
           this.imageRecordDisplay = [];
           for(var i = 0; i < imageLength; i++){
             let privateImage: ImageRecord = {
@@ -324,12 +324,12 @@ export class UploadImagesComponent implements OnInit {
               }
               while (this.objectImage[i].image.imageName =! null){
                 this.imageRecordDisplay.push(privateImage);
-                console.log(privateImage);
+                
                 break;
               }
     
           }
-          console.log(this.imageRecordDisplay);
+          
         
         })
       );
@@ -340,29 +340,29 @@ export class UploadImagesComponent implements OnInit {
           this.imageRecord = [];
           const data = x as Array<ImageRecord>;
           let count: number = 0;
-          //while (Object.values(data)[count] != null){
+          
           for(var i = 0; i <data.length; i++){
             let MyImageBlob = Object.values(data)[i];
             
-         // let MyImageName = Object.values(data)[1];
-         // let MyImageOwner = Object.values(data)[2];
-         // let MyImageTransferredBy = Object.values(data)[3];
-          //let testIndex = Object.values(data)[4];
+         
+         
+         
+          
   
-         // this.imageRecord.push(MyImageName);
+         
             this.imageRecord.push(MyImageBlob);
           }
-         // this.imageRecord.push(MyImageOwner);
-         // this.imageRecord.push(MyImageTransferredBy);
+         
+         
   
       
           this.stringImage = JSON.stringify(this.imageRecord);
           this.objectImage = JSON.parse(this.stringImage);
-          console.log(this.objectImage);
-          //console.log(this.objectImage[0].image.imageName);
-          //console.log(this.stringImage + '1767676767676767676');
+          
+          
+          
           let imageLength = this.objectImage.length;
-          console.log(imageLength);
+          
           this.imageRecordDisplay = [];
           for(var i = 0; i < imageLength; i++){
             let privateImage: ImageRecord = {
@@ -373,12 +373,12 @@ export class UploadImagesComponent implements OnInit {
               }
               while (this.objectImage[i].image.imageName =! null){
                 this.imageRecordDisplay.push(privateImage);
-                console.log(privateImage);
+                
                 break;
               }
     
           }
-          console.log(this.imageRecordDisplay);
+          
         
         })
       );
@@ -389,29 +389,29 @@ export class UploadImagesComponent implements OnInit {
           this.imageRecord = [];
           const data = x as Array<ImageRecord>;
           let count: number = 0;
-          //while (Object.values(data)[count] != null){
+          
           for(var i = 0; i <data.length; i++){
             let MyImageBlob = Object.values(data)[i];
             
-         // let MyImageName = Object.values(data)[1];
-         // let MyImageOwner = Object.values(data)[2];
-         // let MyImageTransferredBy = Object.values(data)[3];
-          //let testIndex = Object.values(data)[4];
+         
+         
+         
+          
   
-         // this.imageRecord.push(MyImageName);
+         
             this.imageRecord.push(MyImageBlob);
           }
-         // this.imageRecord.push(MyImageOwner);
-         // this.imageRecord.push(MyImageTransferredBy);
+         
+         
   
       
           this.stringImage = JSON.stringify(this.imageRecord);
           this.objectImage = JSON.parse(this.stringImage);
-          console.log(this.objectImage);
-          //console.log(this.objectImage[0].image.imageName);
-          //console.log(this.stringImage + '1767676767676767676');
+          
+          
+          
           let imageLength = this.objectImage.length;
-          console.log(imageLength);
+          
           this.imageRecordDisplay = [];
           for(var i = 0; i < imageLength; i++){
             let privateImage: ImageRecord = {
@@ -422,13 +422,13 @@ export class UploadImagesComponent implements OnInit {
               }
               while (this.objectImage[i].image.imageName =! null){
                 this.imageRecordDisplay.push(privateImage);
-                console.log(privateImage);
+                
                 break;
               }
     
           }
           
-          console.log(this.imageRecordDisplay);
+          
         
         })
       );
@@ -438,13 +438,13 @@ export class UploadImagesComponent implements OnInit {
   
     public getOwnerHosp(event: any) {
       this.ownerHosp = event.target.value;
-      console.log(this.ownerHosp);
+      
      }
 
   transfer(file: File, imageBlob: any): void {
    
-    console.log(file);
-    //const files = file;
+    
+    
     const formData: FormData = new FormData();
     const transferFormData: FormData = new FormData();
     this.currentDate = new Date();
@@ -453,27 +453,27 @@ export class UploadImagesComponent implements OnInit {
     var max = 100;
     var randomGenerator = Math.floor(Math.random() * (max - min+1)) + min;
     const keyCounter = 'ID-' + randomGenerator;
-    //console.log(keyCounter); //THERE
+    
 
-    const hospitalId = this.ownerHosp + '-' + keyCounter; //who we're transferring to
-    const transferredBy = 'hosp' + this.authService.getHospitalId();  //who is transferring
-    //const imageIDName = this.imageID;
+    const hospitalId = this.ownerHosp + '-' + keyCounter; 
+    const transferredBy = 'hosp' + this.authService.getHospitalId();  
+    
     const reader = new FileReader();
 
     this.transferForm = this.fb.group({
       imageName: [file.name, Validators.required],
-      ownerHosp: [this.ownerHosp, Validators.required], //target hospital (transfer to)
+      ownerHosp: [this.ownerHosp, Validators.required], 
       currentDate: [this.currentDate, Validators.required],
     });
 
-    console.log(this.transferForm.value);
     
-    //this.imageBlobString = imageBlob.toString();
-    console.log(imageBlob);
+    
+    
+    
 
     this.form = this.fb.group({
       imageName: [file.name, Validators.required],
-      ownerHosp: [hospitalId, Validators.required], //target hospital (transfer to)
+      ownerHosp: [hospitalId, Validators.required], 
       file: [imageBlob, Validators.required],
       transferredBy: [transferredBy, Validators.required],
     });
@@ -483,10 +483,10 @@ export class UploadImagesComponent implements OnInit {
     transferFormData.append('date', this.currentDate.toDateString());
 
     
-    //this.uploadService.transferLedger(transferFormData);
+    
 
-    console.log(this.ownerHosp + '236363636636');
-    //console.log(this.imageID + '237373737');
+    
+    
 
     formData.append('file', imageBlob);
     formData.append('imageName', file.name);
@@ -494,12 +494,12 @@ export class UploadImagesComponent implements OnInit {
     formData.append('transferredBy', transferredBy);
     
     
-    console.log(formData.get('file'));
-    console.log(formData.get('imageName'));
-    console.log(formData.get('ownerHosp'));
-    console.log(formData.get('transferredBy'));
-    //console.log(file.name);
-    //console.log(hospitalId);
+    
+    
+    
+    
+    
+    
     this.allSub.add(
       this.doctorService.transfer(this.form.value).subscribe(x => this.transferImageData = x)
     );
@@ -519,12 +519,12 @@ export class UploadImagesComponent implements OnInit {
   }
 
   public isVCUMethod(): void {
-    console.log(this.doctorId);
+    
     var doctorID = this.doctorId;
     this.parsedhospID = doctorID.substring(0,5);
-    console.log(this.parsedhospID);
+    
     if(this.parsedhospID == "HOSP1"){
-      //console.log(this.hospitalId);
+      
       this.isVCU = true;
     }
     else{
@@ -533,7 +533,7 @@ export class UploadImagesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const transferredBy = 'hosp' + this.authService.getHospitalId();  //who is transferring
+    const transferredBy = 'hosp' + this.authService.getHospitalId();  
     if (transferredBy == 'hosp1'){
     this.imageInfos = this.uploadService.getFilesOne();
     }
@@ -562,10 +562,10 @@ export class UploadImagesComponent implements OnInit {
 
   open(content: any, image: any) {
     this.imageRecordDisplayTemp = [];
-    console.log(image);
+    
     this.imageRecordDisplayTemp.push(image);
-    console.log(this.imageRecordDisplayTemp);
-    console.log(image.imageName + '53939393993 in upload.ts');
+    
+    
 
     this.transferLedgerImage = this.fb.group({
       imageName: [image.imageName, Validators.required]
@@ -578,17 +578,17 @@ export class UploadImagesComponent implements OnInit {
       this.uploadService.getTransferLedger().subscribe(x => {
         this.LedgerRecord = [];
         const data = x as Array<LedgerRecord>;
-        console.log(data);
+        
         let count: number = 0;
         for(var i = 0; i <data.length; i++){
           let LedgerBlob = Object.values(data)[i];
-          console.log(LedgerBlob);
+          
 
 
           this.LedgerRecord.push(LedgerBlob);
         }
 
-        console.log(this.LedgerRecord);
+        
       }
 
       
@@ -596,7 +596,7 @@ export class UploadImagesComponent implements OnInit {
       var tempString = 'temp';
     this.transferForm = this.fb.group({
       imageName: [tempString, Validators.required],
-      ownerHosp: [this.ownerHosp, Validators.required], //target hospital (transfer to)
+      ownerHosp: [this.ownerHosp, Validators.required], 
       currentDate: [this.currentDate, Validators.required],
     });
 
@@ -644,45 +644,45 @@ export class UploadImagesComponent implements OnInit {
     }
   }
 
- //update with call to transfer and change of paramters**
+ 
 public getLocalFiles(image: any) {
-  console.log(image);
+  
   this.messageTransfer = [];
   this.imageURL = image.url;
   var imageNameBeforeSplit = this.imageURL;
-  console.log(this.imageURL);
+  
   
   var imageNameAfter = imageNameBeforeSplit.substring(33, imageNameBeforeSplit.length);
-  console.log(imageNameAfter);
- // http://localhost:3001/files/1649698621763-VCUImageTWO.jfif
+  
+ 
 
-  console.log(this.imageURL);
+  
   (async () => {
     const response = await fetch(this.imageURL);
     const imageBlob = await response.blob();
     var file = new File([imageBlob], imageNameAfter);
-    //this.transfer(file); //call to function IMPORTANT
+    
     const reader = new FileReader();
     reader.readAsDataURL(imageBlob);
-    //this.selectedFiles = file;
+    
     reader.onloadend = () => {
       const base64data = reader.result;
-      console.log(base64data); //whole blob
-      //this.transfer(base64data);
+      
+      
       this.transfer(file, base64data);
     }
   })()
-  console.log(this.getLocalFiles);
+  
 }
 
 public addLedgerHistory(ledgerImageName: any, ledgerOwnerHosp: any, date: any, action: any){
-    console.log(ledgerImageName);
-    console.log(date);
-    console.log(action);
+    
+    
+    
 
     this.key = ledgerImageName;
     this.ledgerHistory[this.key] = [ledgerOwnerHosp, date, action];
-    console.log(this.ledgerHistory);
+    
   }
   
 }

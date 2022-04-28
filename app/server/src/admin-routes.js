@@ -1,9 +1,5 @@
 /* eslint-disable new-cap */
 /**
- * @author Jathin Sreenivas
- * @email jathin.sreenivas@stud.fra-uas.de
- * @create date 2021-01-27 12:47:10
- * @modify date 2021-02-03 23:42:25
  * @desc Admin specific methods - API documentation in http://localhost:3002/ swagger editor.
  */
 

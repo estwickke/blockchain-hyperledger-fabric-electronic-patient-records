@@ -1,8 +1,4 @@
 /**
- * @author Jathin Sreenivas
- * @email jathin.sreenivas@stud.fra-uas.de
- * @create date 2020-12-26 13:26:42
- * @modify date 2021-03-14 20:52:37
  * @desc The file which interacts with the fabric network.
  */
 
@@ -22,7 +18,6 @@ const walletPath = path.join(__dirname, 'wallet');
 
 
 /**
- * @author Jathin Sreenivas
  * @param  {string} doctorID
  * @return {networkObj} networkObj if all paramters are correct, the networkObj consists of contract, network, gateway
  * @return {string} response error if there is a error in the method
@@ -53,13 +48,13 @@ exports.connectToNetwork = async function(doctorID) {
     * ubmit transactions and query. All transactions submitted by this gateway will be
     * signed by this user using the credentials stored in the wallet.
     */
-    // using asLocalhost as this gateway is using a fabric network deployed locally
+    
     await gateway.connect(ccp, {wallet, identity: doctorID, discovery: {enabled: true, asLocalhost: true}});
 
-    // Build a network instance based on the channel where the smart contract is deployed
+    
     const network = await gateway.getNetwork(channelName);
 
-    // Get the contract from the network.
+    
     const contract = network.getContract(chaincodeName);
 
     const networkObj = {
@@ -80,7 +75,6 @@ exports.connectToNetwork = async function(doctorID) {
 
 
 /**
- * @author Jathin Sreenivas
  * @param  {*} networkObj the object which is given when connectToNetwork is executed
  * @param  {boolean} isQuery true if retieving from ledger, else false in the case of add a transaction to the ledger.
  * @param  {string} func must be the function name in the chaincode.
@@ -114,7 +108,6 @@ exports.invoke = async function(networkObj, isQuery, func, args= '') {
 };
 
 /**
- * @author Jathin Sreenivas
  * @param  {string} attributes JSON string in which userId, hospitalId and role must be present.
  * @description For patient attributes also contain the patient object
  * @description Creates a patient/doctor and adds to the wallet to the given hospitalId
@@ -132,7 +125,7 @@ exports.registerUser = async function(attributes) {
 
   try {
     const wallet = await buildWallet(Wallets, walletPath);
-    // TODO: Must be handled in a config file instead of using if
+    
     if (hospitalId === 1) {
       const ccp = buildCCPHosp1();
       const caClient = buildCAClient(FabricCAServices, ccp, 'ca.hosp1.lithium.com');
@@ -164,12 +157,12 @@ exports.registerUser = async function(attributes) {
  * @description Retrieves all the users(doctors) based on user type(doctor) and hospitalId
  */
 exports.getAllDoctorsByHospitalId = async function(networkObj, hospitalId) {
-  // Get the User from the identity context
+  
   const users = networkObj.gateway.identityContext.user;
   let caClient;
   const result = [];
   try {
-    // TODO: Must be handled in a config file instead of using if
+    
     if (hospitalId === 1) {
       const ccp = buildCCPHosp1();
       caClient = buildCAClient(FabricCAServices, ccp, 'ca.hosp1.lithium.com');
@@ -181,11 +174,11 @@ exports.getAllDoctorsByHospitalId = async function(networkObj, hospitalId) {
       caClient = buildCAClient(FabricCAServices, ccp, 'ca.hosp3.lithium.com');
     }
 
-    // Use the identity service to get the user enrolled using the respective CA
+    
     const idService = caClient.newIdentityService();
     const userList = await idService.getAll(users);
 
-    // for all identities the attrs can be found
+    
     const identities = userList.result.identities;
 
     for (let i = 0; i < identities.length; i++) {
@@ -194,7 +187,7 @@ exports.getAllDoctorsByHospitalId = async function(networkObj, hospitalId) {
         tmp.id = identities[i].id;
         tmp.role = identities[i].type;
         attributes = identities[i].attrs;
-        // Doctor object will consist of firstName and lastName
+        
         for (let j = 0; j < attributes.length; j++) {
           if (attributes[j].name.endsWith('Name') || attributes[j].name === 'role' || attributes[j].name === 'speciality') {
             tmp[attributes[j].name] = attributes[j].value;

@@ -27,18 +27,10 @@ export class DoctorComponent implements OnInit, OnDestroy {
   public isVCU: boolean;
   public parsedhospID: any;
   public transactionRecordDisplay: Array<transactionRecord> = [];
-  //public all_images$?: Observable<Array<transferredImages>>;
 
-//  public headerNames = [
-//    new DisplayVal(viewTransferredAssets.prototype.imageName, 'Image Name'),
-//    new DisplayVal(viewTransferredAssets.prototype.file, 'File'),
-//    new DisplayVal(viewTransferredAssets.prototype.transferredBy, 'Transferred By'),
-//    new DisplayVal(viewTransferredAssets.prototype.ownerHosp, 'ownerHosp')
 
-//  ];
-
-public transactionID: any;
-private allSub = new Subscription();
+  public transactionID: any;
+  private allSub = new Subscription();
   TransactionRecord: any[];
 
 
@@ -49,7 +41,7 @@ private allSub = new Subscription();
   ) { }
 
   ngOnInit(): void {
-    
+
     this.sub = this.route.params
       .subscribe((params: Params) => {
         this.doctorId = params.doctorId;
@@ -69,45 +61,32 @@ private allSub = new Subscription();
       this.doctorService.getTransaction().subscribe(x => {
         this.TransactionRecord = [];
         const data = x as Array<transactionRecord>;
-        console.log(data);
+
         let count: number = 0;
-        for(var i = 0; i <data.length; i++){
+        for (var i = 0; i < data.length; i++) {
           let Transaction = Object.values(data)[i];
-          console.log(Transaction);
+
 
 
           this.TransactionRecord.push(Transaction);
         }
 
-        
-
-        console.log(this.TransactionRecord);
       }
 
-      
-    ));
-    
-    console.log(this.transactionRecordDisplay);
-    
-    //console.log(this.transactionID);
-    //this.all_images = this.doctorService.fetchAllTransferredImages(); 
-    
-    console.log(this.transactionRecordDisplay[0]);
-    console.log(this.transactionRecordDisplay[1]);
-    console.log(this.transactionRecordDisplay);
+      ));
 
   }
 
   public isVCUMethod(): void {
-    console.log(this.doctorId);
+
     var doctorID = this.doctorId;
-    this.parsedhospID = doctorID.substring(0,5);
-    console.log(this.parsedhospID);
-    if(this.parsedhospID == "HOSP1"){
-      //console.log(this.hospitalId);
+    this.parsedhospID = doctorID.substring(0, 5);
+
+    if (this.parsedhospID == "HOSP1") {
+
       this.isVCU = true;
     }
-    else{
+    else {
       this.isVCU = false;
     }
   }

@@ -1,8 +1,4 @@
 /**
- * @author Jathin Sreenivas
- * @email jathin.sreenivas@stud.fra-uas.de
- * @create date 2021-03-13 15:02:08
- * @modify date 2021-03-13 15:02:40
  * @desc Add admin of Hosp3. Execute node addHosp3.js to execute
  */
 

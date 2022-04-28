@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
   socialUser!: SocialUser;
   isLoggedin!: boolean;
 
-  // tslint:disable-next-line:typedef
+  
    ngOnInit() {
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
@@ -44,11 +44,11 @@ export class LoginComponent implements OnInit {
     });
 
     this.socialAuthService.authState.subscribe((user) => {
-      //this.socialUser = user;
+      
       this.isLoggedin = (user != null);
       console.log(this.socialUser);
       this.username = (this.socialUser.name);
-      //return this.username;
+      
     });
    }
 

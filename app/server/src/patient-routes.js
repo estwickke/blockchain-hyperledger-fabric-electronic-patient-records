@@ -1,8 +1,4 @@
 /**
- * @author Jathin Sreenivas
- * @email jathin.sreenivas@stud.fra-uas.de
- * @create date 2021-01-27 12:44:37
- * @modify date 2021-02-09 11:56:08
  * @desc Paient specific methods - API documentation in http://localhost:3002/ swagger editor.
  */
 

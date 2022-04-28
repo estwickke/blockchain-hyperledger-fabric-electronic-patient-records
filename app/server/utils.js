@@ -1,9 +1,5 @@
 /* eslint-disable new-cap */
 /**
- * @author Jathin Sreenivas
- * @email jathin.sreenivas@stud.fra-uas.de
- * @create date 2021-01-27 15:50:20
- * @modify date 2021-02-03 23:03:13
  * @desc Utils methods
  */
 const redis = require('redis');

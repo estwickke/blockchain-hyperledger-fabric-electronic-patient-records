@@ -1,8 +1,4 @@
 /**
- * @author Jathin Sreenivas
- * @email jathin.sreenivas@stud.fra-uas.de
- * @create date 2020-12-26 13:26:42
- * @modify date 2021-01-01 11:08:40
  * @desc Referenced from https://github.com/hyperledger/fabric-samples/tree/master/test-application/javascript
  */
 
@@ -10,7 +6,6 @@ const fs = require('fs');
 const path = require('path');
 
 /**
- * @author Jathin Sreenivas
  * @return {ccp} ccp
  * @description Creates a connection profile and returns the network config to Hospital 1. Reads the JSON file created
  * @description When CA is created there is a json for each hospital which specfies the connection profile.
@@ -33,7 +28,6 @@ exports.buildCCPHosp1 = () => {
 };
 
 /**
- * @author Jathin Sreenivas
  * @return {ccp} ccp
  * @description Creates a connection profile and returns the network config to Hospital 2. Reads the JSON file created
  * @description When CA is created there is a json for each hospital which specfies the connection profile.
@@ -56,7 +50,6 @@ exports.buildCCPHosp2 = () => {
 };
 
 /**
- * @author Jathin Sreenivas
  * @return {ccp} ccp
  * @description Creates a connection profile and returns the network config to Hospital 3. Reads the JSON file created
  * @description When CA is created there is a json for each hospital which specfies the connection profile.
@@ -79,7 +72,6 @@ exports.buildCCPHosp3 = () => {
 };
 
 /**
- * @author Jathin Sreenivas
  * @param  {*} Wallets
  * @param  {string} walletPath
  * @return {wallet} wallet
@@ -101,7 +93,6 @@ exports.buildWallet = async (Wallets, walletPath) => {
 };
 
 /**
- * @author Jathin Sreenivas
  * @param  {string} inputString
  * @return {string} jsonString
  * @description Formats the string to JSON

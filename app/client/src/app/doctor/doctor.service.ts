@@ -27,14 +27,6 @@ export class DoctorService {
   }
 
   public transfer(transferImageData: any): Observable<any> {
-    console.log(transferImageData);
-    //console.log(transferImageData.imageID);
-    console.log(transferImageData.imageName);
-    console.log(transferImageData.ownerHosp);
-    console.log(transferImageData.transferredBy);
-    console.log(transferImageData.file);
-
-    
     return this.http.post(this.doctorURL + '/transfer', transferImageData);
   }
   
@@ -74,7 +66,7 @@ export class DoctorService {
       }
     
       record() {
-        console.log({date},{time},{hash}) + '6969696969696';
+        
       }
     
     }
@@ -86,7 +78,7 @@ export class DoctorService {
     const transaction = new transactionRecord(dateMonth,time,hash);
     
     transaction.record();
-    console.log(transaction + '8188181881881881');
+    
     return transaction;
   }
 

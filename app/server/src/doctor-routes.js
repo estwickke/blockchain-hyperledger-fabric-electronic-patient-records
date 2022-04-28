@@ -1,8 +1,4 @@
 /**
- * @author Jathin Sreenivas
- * @email jathin.sreenivas@stud.fra-uas.de
- * @create date 2021-01-27 12:44:51
- * @modify date 2021-03-14 21:24:41
  * @desc Doctor specific methods - API documentation in http://localhost:3002/ swagger editor.
  */
 
